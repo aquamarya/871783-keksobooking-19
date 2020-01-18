@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Мария Власова](https://up.htmlacademy.ru/javascript/19/user/871783).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Орленко](https://htmlacademy.ru/profile/id104887).
 
 ---
 
