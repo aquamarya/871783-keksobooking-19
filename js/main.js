@@ -44,74 +44,83 @@ var FOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 var pin = {
-  offsetX: 50,
-  offsetY: 60
+  width: 50,
+  height: 60
 };
-var LOCATION_X = 60;
-var LOCATION_Y = 300;
+var offsetX = pin.width / 2;
+var offsetY = pin.height / 2;
 
-var offsetX = ;
-var offsetY = ;
-
+// Создает случайный элемент массива
 var getRandomItem = function (length) {
   return Math.floor(Math.random() * length);
 };
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
+// Возвращает результат, включая максимум и минимум
+var getRandomIntInclusive = function (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
+var adverts = [];
+
+// Создает объявление из массива данных
+var advert = function () {
+  return {
+    author: {
+      avatar: 'img/avatars/user0' + getRandomIntInclusive(1, 8) + '.png',
+    },
+    offer: {
+      title: 'Заголовок предложения',
+      address: '600, 350', // "{{location.x}}, {{location.y}}"
+      price: getRandomIntInclusive(PRISES),
+      type: getRandomItem(TYPE_OF_HOUSE),
+      rooms: getRandomIntInclusive(ROOMS),
+      guests: getRandomIntInclusive(GUESTS),
+      checkin: getRandomItem(CHECKIN),
+      checkout: getRandomItem(CHECKOUT),
+      features: getRandomItem(FEATURES),
+      description: 'Описание',
+      photos: getRandomItem(FOTOS)
+    },
+    location: {
+      x: getRandomIntInclusive(0, 1200),
+      y: getRandomIntInclusive(130, 630)
+    }
+  };
+};
+
+// Создает набор объявлений - mocks?
 var createAdverts = function (length) {
-  var adverts = [];
   for (var i = 0; i < length; i++) {
-    adverts[i] = {
-      author: {
-        avatar: 'img/avatars/user0' + getRandomArbitrary(1, 8) + '.png',
-      },
-      offer: {
-        title: 'Заголовок предложения',
-        address: '600, 350', // "{{location.x}}, {{location.y}}"
-        price: getRandomArbitrary(PRISES),
-        type: getRandomItem(TYPE_OF_HOUSE),
-        rooms: getRandomArbitrary(ROOMS),
-        guests: getRandomArbitrary(GUESTS),
-        checkin: getRandomItem(CHECKIN),
-        checkout: getRandomItem(CHECKOUT),
-        features: getRandomItem(FEATURES),
-        description: 'Описание',
-        photos: getRandomItem(FOTOS)
-      },
-      location: {
-        x: getRandomArbitrary(0, 1200),
-        y: getRandomArbitrary(130, 630)
-      }
-    };
-    return adverts;
+    adverts.push(advert());
   }
 };
-createAdverts();
+createAdverts(8);
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var mapPins = document.querySelector('.map__pins');
+var mapPins = document.querySelector('.map__pins'); // пока не поняла, где это дальше применить - при отрисовке массива меток?
 var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-var renderMapPin = function (adverts) {
+// Отрисовывает метку на карте
+var renderMapPin = function () {
   var mapPinElement = mapPinTemplate.cloneNode(true);
-  mapPinElement.querySelector('img').src = adverts.author.avatar;
-  mapPinElement.querySelector('img').alt = adverts.offer.title;
-  mapPinElement.style = 'left:' + ' ' + (adverts.location.x + offsetX) + 'px; top:' + ' ' + (adverts.location.y + offsetY) + 'px';
+  mapPinElement.querySelector('img').src = advert.author.avatar; // в консоли почему-то этот путь помечает ошибкой
+  mapPinElement.querySelector('img').alt = advert.offer.title;
+  mapPinElement.style = 'left:' + ' ' + (advert.location.x - offsetX) + 'px; top:' + ' ' + (advert.location.y - offsetY) + 'px';
   return mapPinElement;
 };
 
 renderMapPin();
 
-var renderPins = function (length) {
+// Отрисовывает массив меток
+var renderMapPins = function (length) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < length; i++) {
     fragment.appendChild(renderMapPin(adverts[i]));
   }
 };
 
-renderPins();
+renderMapPins();
