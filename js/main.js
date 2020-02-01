@@ -101,7 +101,8 @@ createAdverts(8);
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var mapPins = document.querySelector('.map__pins'); // пока не поняла, где это дальше применить - при отрисовке массива меток?
+// var mapPins = document.querySelector('.map__pins'); закомментировала, т.к. тревис ругается
+// пока не поняла, где это дальше применить - при отрисовке массива меток?
 var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Отрисовывает метку на карте
