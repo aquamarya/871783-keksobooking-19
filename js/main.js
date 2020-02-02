@@ -1,6 +1,6 @@
 'use strict';
 
-var PRISES = [
+var PRICES = [
   10000,
   50000
 ];
@@ -12,13 +12,11 @@ var TYPE_OF_HOUSE = [
 ];
 var ROOMS = [
   1,
-  2,
   3
 ];
 var GUESTS = [
   1,
-  2,
-  3
+  2
 ];
 var CHECKIN = [
   '12:00',
@@ -43,16 +41,21 @@ var FOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
-var pin = {
+var Pin = {
   width: 50,
-  height: 60
+  height: 70
 };
-var offsetX = pin.width / 2;
-var offsetY = pin.height / 2;
+var MIN_X = 0;
+var MAX_X = 1200;
+var MIN_Y = 130;
+var MAX_Y = 630;
+var offsetX = Pin.width / 2;
+var offsetY = Pin.height / 2;
+var MAX_AMOUNT = 8;
 
 // Создает случайный элемент массива
-var getRandomItem = function (length) {
-  return Math.floor(Math.random() * length);
+var getRandomItem = function (max) {
+  return Math.floor(Math.random() * max);
 };
 
 // Возвращает результат, включая максимум и минимум
@@ -68,15 +71,15 @@ var adverts = [];
 var getAdvert = function () {
   return {
     author: {
-      avatar: 'img/avatars/user0' + getRandomIntInclusive(1, 8) + '.png',
+      avatar: 'img/avatars/user0' + getRandomIntInclusive(1, MAX_AMOUNT) + '.png',
     },
     offer: {
       title: 'Заголовок предложения',
       address: '600, 350', // "{{location.x}}, {{location.y}}"
-      price: getRandomIntInclusive(PRISES),
+      price: getRandomIntInclusive(PRICES[0], PRICES[1]),
       type: getRandomItem(TYPE_OF_HOUSE),
-      rooms: getRandomIntInclusive(ROOMS),
-      guests: getRandomIntInclusive(GUESTS),
+      rooms: getRandomIntInclusive(ROOMS[0], ROOMS[1]),
+      guests: getRandomIntInclusive(GUESTS[0], GUESTS[1]),
       checkin: getRandomItem(CHECKIN),
       checkout: getRandomItem(CHECKOUT),
       features: getRandomItem(FEATURES),
@@ -84,8 +87,8 @@ var getAdvert = function () {
       photos: getRandomItem(FOTOS)
     },
     location: {
-      x: getRandomIntInclusive(0, 1200),
-      y: getRandomIntInclusive(130, 630)
+      x: getRandomIntInclusive(MIN_X, MAX_X),
+      y: getRandomIntInclusive(MIN_Y, MAX_Y)
     }
   };
 };
@@ -96,17 +99,15 @@ var createAdverts = function (length) {
     adverts.push(getAdvert());
   }
 };
-createAdverts(8);
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
 // Отрисовывает метку на карте
 var renderMapPin = function (item) {
+  var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPinElement = mapPinTemplate.cloneNode(true);
-  mapPinElement.querySelector('img').src = item.author.avatar; // в консоли почему-то этот путь помечает ошибкой
+  mapPinElement.querySelector('img').src = item.author.avatar;
   mapPinElement.querySelector('img').alt = item.offer.title;
   mapPinElement.style = 'left:' + ' ' + (item.location.x - offsetX) + 'px; top:' + ' ' + (item.location.y - offsetY) + 'px';
   return mapPinElement;
@@ -114,13 +115,13 @@ var renderMapPin = function (item) {
 
 // Отрисовывает массив меток
 var renderMapPins = function (length) {
+  var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
+  createAdverts(length);
   for (var i = 0; i < length; i++) {
     fragment.appendChild(renderMapPin(adverts[i]));
   }
-  return fragment;
+  mapPins.appendChild(fragment);
 };
-var pins = renderMapPins(adverts.length);
 
-var mapPins = document.querySelector('.map__pins');
-mapPins.appendChild(pins);
+renderMapPins(MAX_AMOUNT);
