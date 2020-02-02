@@ -65,7 +65,7 @@ var getRandomIntInclusive = function (min, max) {
 var adverts = [];
 
 // Создает объявление из массива данных
-var advert = function () {
+var getAdvert = function () {
   return {
     author: {
       avatar: 'img/avatars/user0' + getRandomIntInclusive(1, 8) + '.png',
@@ -93,7 +93,7 @@ var advert = function () {
 // Создает набор объявлений - mocks?
 var createAdverts = function (length) {
   for (var i = 0; i < length; i++) {
-    adverts.push(advert());
+    adverts.push(getAdvert());
   }
 };
 createAdverts(8);
@@ -101,20 +101,16 @@ createAdverts(8);
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-// var mapPins = document.querySelector('.map__pins'); закомментировала, т.к. тревис ругается
-// пока не поняла, где это дальше применить - при отрисовке массива меток?
 var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Отрисовывает метку на карте
-var renderMapPin = function () {
+var renderMapPin = function (item) {
   var mapPinElement = mapPinTemplate.cloneNode(true);
-  mapPinElement.querySelector('img').src = advert.author.avatar; // в консоли почему-то этот путь помечает ошибкой
-  mapPinElement.querySelector('img').alt = advert.offer.title;
-  mapPinElement.style = 'left:' + ' ' + (advert.location.x - offsetX) + 'px; top:' + ' ' + (advert.location.y - offsetY) + 'px';
+  mapPinElement.querySelector('img').src = item.author.avatar; // в консоли почему-то этот путь помечает ошибкой
+  mapPinElement.querySelector('img').alt = item.offer.title;
+  mapPinElement.style = 'left:' + ' ' + (item.location.x - offsetX) + 'px; top:' + ' ' + (item.location.y - offsetY) + 'px';
   return mapPinElement;
 };
-
-renderMapPin();
 
 // Отрисовывает массив меток
 var renderMapPins = function (length) {
@@ -122,6 +118,9 @@ var renderMapPins = function (length) {
   for (var i = 0; i < length; i++) {
     fragment.appendChild(renderMapPin(adverts[i]));
   }
+  return fragment;
 };
+var pins = renderMapPins(adverts.length);
 
-renderMapPins();
+var mapPins = document.querySelector('.map__pins');
+mapPins.appendChild(pins);
