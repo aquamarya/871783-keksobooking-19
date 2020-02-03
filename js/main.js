@@ -41,7 +41,7 @@ var FOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
-var Pin = {
+var PIN = {
   width: 50,
   height: 70
 };
@@ -49,8 +49,8 @@ var MIN_X = 0;
 var MAX_X = 1200;
 var MIN_Y = 130;
 var MAX_Y = 630;
-var offsetX = Pin.width / 2;
-var offsetY = Pin.height / 2;
+var offsetX = PIN.width / 2;
+var offsetY = PIN.height / 2;
 var MAX_AMOUNT = 8;
 
 // Создает случайный элемент массива
@@ -77,14 +77,14 @@ var getAdvert = function () {
       title: 'Заголовок предложения',
       address: '600, 350', // "{{location.x}}, {{location.y}}"
       price: getRandomIntInclusive(PRICES[0], PRICES[1]),
-      type: getRandomItem(TYPE_OF_HOUSE),
+      type: getRandomItem(TYPE_OF_HOUSE.length),
       rooms: getRandomIntInclusive(ROOMS[0], ROOMS[1]),
       guests: getRandomIntInclusive(GUESTS[0], GUESTS[1]),
-      checkin: getRandomItem(CHECKIN),
-      checkout: getRandomItem(CHECKOUT),
-      features: getRandomItem(FEATURES),
+      checkin: getRandomItem(CHECKIN.length),
+      checkout: getRandomItem(CHECKOUT.length),
+      features: getRandomItem(FEATURES.length),
       description: 'Описание',
-      photos: getRandomItem(FOTOS)
+      photos: getRandomItem(FOTOS.length)
     },
     location: {
       x: getRandomIntInclusive(MIN_X, MAX_X),
