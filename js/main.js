@@ -10,6 +10,12 @@ var TYPE_OF_HOUSE = [
   'house',
   'bungalo'
 ];
+var TYPE_OF_HOUSE_CARD = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalo': 'Бунгало'
+};
 var ROOMS = [
   1,
   3
@@ -113,6 +119,35 @@ var renderMapPin = function (item) {
   return mapPinElement;
 };
 
+var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+var renderMapCard = function (card) {
+  var mapCardElement = mapCardTemplate.cloneNode(true);
+
+  mapCardElement.querySelector('.popup__title').textContent = card.offer.title;
+  mapCardElement.querySelector('.popup__text--address').textContent = card.offer.address;
+  mapCardElement.querySelector('.popup__text--price').textContent = card.offer.price + ' ' + '₽/ночь';
+  mapCardElement.querySelector('.popup__type').textContent = TYPE_OF_HOUSE_CARD[card.offer.type];
+  mapCardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' ' + 'комнаты для' + ' ' + card.offer.guests + ' ' + 'гостей';
+  mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после' + ' ' + card.offer.checkin + ', выезд до' + ' ' + card.offer.checkout;
+  mapCardElement.querySelector('.popup__features').querySelectorAll('.popup__feature').textContent = card.offer.features;
+  mapCardElement.querySelector('.popup__description').textContent = card.offer.description;
+  mapCardElement.querySelector('.popup__avatar').src = card.author.avatar;
+  mapCardElement.querySelector('.popup__photos').querySelector('.popup__photo').src = card.offer.photos;
+  // var cardPhotos = mapCardElement.querySelector('.popup__photos').src;
+  // if (card.offer.photos.length) {
+  //   for (var i = 1; i > card.offer.photos.length; i++) {
+  //     var cardPhoto = document.createElement('img');
+  //     cardPhoto.classList.add('.popup__photo');
+  //     cardPhotos.appendChild(cardPhoto);
+  //   }
+  // } else {
+  //   mapCardElement.remove(cardPhotos);
+  // }
+
+  return mapCardElement;
+};
+
 // Отрисовывает массив меток
 var renderMapPins = function (length) {
   var mapPins = document.querySelector('.map__pins');
@@ -120,6 +155,7 @@ var renderMapPins = function (length) {
   createAdverts(length);
   for (var i = 0; i < length; i++) {
     fragment.appendChild(renderMapPin(adverts[i]));
+    fragment.appendChild(renderMapCard(adverts[i]));
   }
   mapPins.appendChild(fragment);
 };
