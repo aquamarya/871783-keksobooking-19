@@ -42,7 +42,7 @@ var FEATURES = [
   'elevator',
   'conditioner'
 ];
-var FOTOS = [
+var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
@@ -60,8 +60,13 @@ var offsetY = PIN.height / 2;
 var MAX_AMOUNT = 8;
 
 // Создает случайный элемент массива
-var getRandomItem = function (max) {
-  return Math.floor(Math.random() * max);
+// var getRandomItem = function (max) {
+//   return Math.floor(Math.random() * max);
+// };
+
+var getRandomItem = function (array) {
+  var itemIndex = Math.floor(Math.random() * array.length);
+  return array[itemIndex];
 };
 
 // Возвращает результат, включая максимум и минимум
@@ -83,14 +88,14 @@ var getAdvert = function () {
       title: 'Заголовок предложения',
       address: '600, 350', // "{{location.x}}, {{location.y}}"
       price: getRandomIntInclusive(PRICES[0], PRICES[1]),
-      type: getRandomItem(TYPE_OF_HOUSE.length),
+      type: getRandomItem(TYPE_OF_HOUSE),
       rooms: getRandomIntInclusive(ROOMS[0], ROOMS[1]),
       guests: getRandomIntInclusive(GUESTS[0], GUESTS[1]),
-      checkin: getRandomItem(CHECKIN.length),
-      checkout: getRandomItem(CHECKOUT.length),
-      features: getRandomItem(FEATURES.length),
+      checkin: getRandomItem(CHECKIN),
+      checkout: getRandomItem(CHECKOUT),
+      features: [getRandomItem(FEATURES), getRandomItem(FEATURES)],
       description: 'Описание',
-      photos: getRandomItem(FOTOS.length)
+      photos: [getRandomItem(PHOTOS), getRandomItem(PHOTOS)]
     },
     location: {
       x: getRandomIntInclusive(MIN_X, MAX_X),
@@ -108,6 +113,8 @@ var createAdverts = function (length) {
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
+var mapFilterContainer = map.querySelector('.map__filters-container');
+// var insertedElement = map.insertBefore(mapCardTemplate, mapFilterContainer);
 
 // Отрисовывает метку на карте
 var renderMapPin = function (item) {
@@ -119,10 +126,14 @@ var renderMapPin = function (item) {
   return mapPinElement;
 };
 
-var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
 var renderMapCard = function (card) {
+  var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardElement = mapCardTemplate.cloneNode(true);
+  // for (var k = 0; k < adverts.length; k++) {
+  //   if (k === 0) {
+  //     var MapCardOfFirstPin = map.insertBefore(mapCardTemplate, mapFilterContainer);
+  //   }
+  // }
 
   mapCardElement.querySelector('.popup__title').textContent = card.offer.title;
   mapCardElement.querySelector('.popup__text--address').textContent = card.offer.address;
@@ -130,21 +141,36 @@ var renderMapCard = function (card) {
   mapCardElement.querySelector('.popup__type').textContent = TYPE_OF_HOUSE_CARD[card.offer.type];
   mapCardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' ' + 'комнаты для' + ' ' + card.offer.guests + ' ' + 'гостей';
   mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после' + ' ' + card.offer.checkin + ', выезд до' + ' ' + card.offer.checkout;
-  mapCardElement.querySelector('.popup__features').querySelectorAll('.popup__feature').textContent = card.offer.features;
   mapCardElement.querySelector('.popup__description').textContent = card.offer.description;
   mapCardElement.querySelector('.popup__avatar').src = card.author.avatar;
-  mapCardElement.querySelector('.popup__photos').querySelector('.popup__photo').src = card.offer.photos;
-  // var cardPhotos = mapCardElement.querySelector('.popup__photos').src;
-  // if (card.offer.photos.length) {
-  //   for (var i = 1; i > card.offer.photos.length; i++) {
-  //     var cardPhoto = document.createElement('img');
-  //     cardPhoto.classList.add('.popup__photo');
-  //     cardPhotos.appendChild(cardPhoto);
-  //   }
-  // } else {
-  //   mapCardElement.remove(cardPhotos);
-  // }
 
+  var popupFeatures = mapCardElement.querySelector('.popup__features');
+  var popupFeature = popupFeatures.querySelectorAll('.popup__feature');
+  var popupFeatureTemplate = popupFeatures.querySelectorAll('.popup__feature').cloneNode(true);
+  var features = card.offer.features;
+  for (var j = 0; j < features.length; j++) {
+    if (j === 0) {
+      popupFeature = features[j];
+      popupFeatures.appendChild(popupFeature);
+    } else {
+      popupFeatureTemplate = features[j];
+      popupFeatures.appendChild(popupFeatureTemplate);
+    }
+  }
+
+  var cardPhotos = mapCardElement.querySelector('.popup__photos');
+  var cardPhoto = cardPhotos.querySelector('.popup__photo');
+  var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo').cloneNode(true);
+  var photos = card.offer.photos;
+  for (var i = 0; i < photos.length; i++) {
+    if (i === 0) {
+      cardPhoto.src = photos[i];
+      cardPhotos.appendChild(cardPhoto);
+    } else {
+      cardPhotoTemplate.src = photos[i];
+      cardPhotos.appendChild(cardPhotoTemplate);
+    }
+  }
   return mapCardElement;
 };
 
@@ -155,7 +181,7 @@ var renderMapPins = function (length) {
   createAdverts(length);
   for (var i = 0; i < length; i++) {
     fragment.appendChild(renderMapPin(adverts[i]));
-    fragment.appendChild(renderMapCard(adverts[i]));
+    // fragment.appendChild(renderMapCard(adverts[i]));
   }
   mapPins.appendChild(fragment);
 };
