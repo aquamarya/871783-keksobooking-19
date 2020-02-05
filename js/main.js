@@ -113,8 +113,7 @@ var createAdverts = function (length) {
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-var mapFilterContainer = map.querySelector('.map__filters-container');
-// var insertedElement = map.insertBefore(mapCardTemplate, mapFilterContainer);
+// var mapFilterContainer = map.querySelector('.map__filters-container');
 
 // Отрисовывает метку на карте
 var renderMapPin = function (item) {
@@ -132,9 +131,9 @@ var renderMapCard = function (card) {
   // for (var k = 0; k < adverts.length; k++) {
   //   if (k === 0) {
   //     var MapCardOfFirstPin = map.insertBefore(mapCardTemplate, mapFilterContainer);
+  //     renderMapCard(MapCardOfFirstPin);
   //   }
   // }
-
   mapCardElement.querySelector('.popup__title').textContent = card.offer.title;
   mapCardElement.querySelector('.popup__text--address').textContent = card.offer.address;
   mapCardElement.querySelector('.popup__text--price').textContent = card.offer.price + ' ' + '₽/ночь';
@@ -173,6 +172,7 @@ var renderMapCard = function (card) {
   }
   return mapCardElement;
 };
+renderMapCard();
 
 // Отрисовывает массив меток
 var renderMapPins = function (length) {
