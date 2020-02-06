@@ -122,7 +122,6 @@ var renderMapPin = function (item) {
 };
 
 var renderMapCard = function (card) {
-  console.log(card, 'card');
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardElement = mapCardTemplate.cloneNode(true);
   var popupFeatures = mapCardElement.querySelector('.popup__features');
@@ -149,19 +148,19 @@ var renderMapCard = function (card) {
         }
       }
     });
-  };
+  }
 
   var cardPhotos = mapCardElement.querySelector('.popup__photos');
   var cardPhoto = cardPhotos.querySelector('.popup__photo');
   var cardPhotoClone = cardPhotos.querySelector('.popup__photo').cloneNode(true);
   var photos = card.offer.photos;
 
-  for (var i = 0; i < photos.length; i++) {
-    if (i === 0) {
-      cardPhoto.src = photos[i];
+  for (var j = 0; j < photos.length; j++) {
+    if (j === 0) {
+      cardPhoto.src = photos[j];
       cardPhotos.appendChild(cardPhoto);
     } else {
-      cardPhotoClone.src = photos[i];
+      cardPhotoClone.src = photos[j];
       cardPhotos.appendChild(cardPhotoClone);
     }
   }
