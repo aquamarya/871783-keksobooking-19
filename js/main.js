@@ -60,10 +60,6 @@ var offsetY = PIN.height / 2;
 var MAX_AMOUNT = 8;
 
 // Создает случайный элемент массива
-// var getRandomItem = function (max) {
-//   return Math.floor(Math.random() * max);
-// };
-
 var getRandomItem = function (array) {
   var itemIndex = Math.floor(Math.random() * array.length);
   return array[itemIndex];
@@ -113,7 +109,7 @@ var createAdverts = function (length) {
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-// var mapFilterContainer = map.querySelector('.map__filters-container');
+
 
 // Отрисовывает метку на карте
 var renderMapPin = function (item) {
@@ -126,14 +122,13 @@ var renderMapPin = function (item) {
 };
 
 var renderMapCard = function (card) {
+  console.log(card, 'card');
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardElement = mapCardTemplate.cloneNode(true);
-  // for (var k = 0; k < adverts.length; k++) {
-  //   if (k === 0) {
-  //     var MapCardOfFirstPin = map.insertBefore(mapCardTemplate, mapFilterContainer);
-  //     renderMapCard(MapCardOfFirstPin);
-  //   }
-  // }
+  var popupFeatures = mapCardElement.querySelector('.popup__features');
+  var popupFeatureTemplate = Array.from(popupFeatures.childNodes);
+  var features = card.offer.features;
+
   mapCardElement.querySelector('.popup__title').textContent = card.offer.title;
   mapCardElement.querySelector('.popup__text--address').textContent = card.offer.address;
   mapCardElement.querySelector('.popup__text--price').textContent = card.offer.price + ' ' + '₽/ночь';
@@ -143,45 +138,48 @@ var renderMapCard = function (card) {
   mapCardElement.querySelector('.popup__description').textContent = card.offer.description;
   mapCardElement.querySelector('.popup__avatar').src = card.author.avatar;
 
-  var popupFeatures = mapCardElement.querySelector('.popup__features');
-  var popupFeature = popupFeatures.querySelectorAll('.popup__feature');
-  var popupFeatureTemplate = popupFeatures.querySelectorAll('.popup__feature').cloneNode(true);
-  var features = card.offer.features;
-  for (var j = 0; j < features.length; j++) {
-    if (j === 0) {
-      popupFeature = features[j];
-      popupFeatures.appendChild(popupFeature);
-    } else {
-      popupFeatureTemplate = features[j];
-      popupFeatures.appendChild(popupFeatureTemplate);
-    }
-  }
+  for (var i = 0; i < features.length; i++) {
+    popupFeatureTemplate.forEach(function (child) {
+      if (child.nodeType === 1) {
+        if (child.classList.contains('popup__feature--' + features[i])) {
+          child.style.display = 'inline-block';
+          child.classList.add('popup__feature--visible');
+        } else if (!child.classList.contains('popup__feature--visible')) {
+          child.style.display = 'none';
+        }
+      }
+    });
+  };
 
   var cardPhotos = mapCardElement.querySelector('.popup__photos');
   var cardPhoto = cardPhotos.querySelector('.popup__photo');
-  var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo').cloneNode(true);
+  var cardPhotoClone = cardPhotos.querySelector('.popup__photo').cloneNode(true);
   var photos = card.offer.photos;
+
   for (var i = 0; i < photos.length; i++) {
     if (i === 0) {
       cardPhoto.src = photos[i];
       cardPhotos.appendChild(cardPhoto);
     } else {
-      cardPhotoTemplate.src = photos[i];
-      cardPhotos.appendChild(cardPhotoTemplate);
+      cardPhotoClone.src = photos[i];
+      cardPhotos.appendChild(cardPhotoClone);
     }
   }
   return mapCardElement;
 };
-renderMapCard();
 
 // Отрисовывает массив меток
 var renderMapPins = function (length) {
   var mapPins = document.querySelector('.map__pins');
+  // var map = document.querySelector('.map');
+  var mapFilterContainer = map.querySelector('.map__filters-container');
   var fragment = document.createDocumentFragment();
   createAdverts(length);
   for (var i = 0; i < length; i++) {
     fragment.appendChild(renderMapPin(adverts[i]));
-    // fragment.appendChild(renderMapCard(adverts[i]));
+    if (i === 0) {
+      map.insertBefore(renderMapCard(adverts[0]), mapFilterContainer);
+    }
   }
   mapPins.appendChild(fragment);
 };
