@@ -65,8 +65,16 @@ var PIN_MAIN = {
   left: 570,
   top: 375,
   offsetX: 32,
-  offsetY: 32
+  offsetY: 32,
+  height: 65
 };
+var PIN_MAIN_SIZE = 65;
+var FORM_ELEMENTS = [
+  'input',
+  'select',
+  'textarea',
+  'button'
+];
 
 // Создает случайный элемент массива
 var getRandomItem = function (array) {
@@ -117,7 +125,7 @@ var createAdverts = function (length) {
 };
 
 var map = document.querySelector('.map');
-var mapFiltersContainer = map.querySelector('.map__filters-container');
+// var mapFiltersContainer = map.querySelector('.map__filters-container');
 
 // Отрисовывает метку на карте
 var renderMapPin = function (item) {
@@ -193,69 +201,120 @@ var renderMapPins = function (length) {
 
 renderMapPins(MAX_AMOUNT);
 
+// var form = document.querySelector('.ad-form');
+//
+// var formFieldsets = form.querySelectorAll('fieldset');
+// formFieldsets.forEach(function (fieldset) {
+//   fieldset.setAttribute('disabled', 'disabled');
+// });
+//
+// var formAddress = form.querySelector('#address');
+// formAddress.setAttribute('readonly', 'readonly');
+// formAddress.value = (PIN_MAIN.left + PIN_MAIN.offsetX) + ', ' + (PIN_MAIN.top + PIN_MAIN.offsetY);
+//
+// var mapFilterSelects = mapFiltersContainer.querySelectorAll('.map__filters select');
+// mapFilterSelects.forEach(function (select) {
+//   select.setAttribute('disabled', 'disabled');
+// });
+//
+// var mapFilterFieldsets = mapFiltersContainer.querySelectorAll('.map__filters fieldset');
+// mapFilterFieldsets.forEach(function (fieldset) {
+//   fieldset.setAttribute('disabled', 'disabled');
+// });
+
+// Включает\отключает элементы формы
+var setDisableToggle = function (data, toggle) {
+  for (var i = 0; i < data.length; i++) {
+    var selectors = document.querySelectorAll(data[i]);
+    for (var j = 0; j < selectors.length; j++) {
+      if (toggle === 'add') {
+        selectors[j].setAttribute('disabled', 'disabled');
+      } else {
+        selectors[j].removeAttribute('disabled');
+      }
+    }
+  }
+};
+// Отключает
+setDisableToggle(FORM_ELEMENTS, 'add');
+
 var form = document.querySelector('.ad-form');
+var mapPinMain = map.querySelector('.map__pin--main');
 
-var formFieldsets = form.querySelectorAll('fieldset');
-formFieldsets.forEach(function (fieldset) {
-  fieldset.setAttribute('disabled', 'disabled');
-});
-
-var formAddress = form.querySelector('#address');
-formAddress.setAttribute('readonly', 'readonly');
-formAddress.value = (PIN_MAIN.left + PIN_MAIN.offsetX) + ', ' + (PIN_MAIN.top + PIN_MAIN.offsetY);
-
-var mapFilterSelects = mapFiltersContainer.querySelectorAll('.map__filters select');
-mapFilterSelects.forEach(function (select) {
-  select.setAttribute('disabled', 'disabled');
-});
-
-var mapFilterFieldsets = mapFiltersContainer.querySelectorAll('.map__filters fieldset');
-mapFilterFieldsets.forEach(function (fieldset) {
-  fieldset.setAttribute('disabled', 'disabled');
-});
-
-var activatedPage = function () {
+var activatedForm = function () {
+  setDisableToggle(FORM_ELEMENTS, 'remove');
   map.classList.remove('map--faded');
   form.classList.remove('ad-form--disabled');
-  formFieldsets.forEach(function (fieldset) {
-    fieldset.removeAttribute('disabled');
-  });
-  mapFilterSelects.forEach(function (select) {
-    select.removeAttribute('disabled');
-  });
-  mapFilterFieldsets.forEach(function (fieldset) {
-    fieldset.removeAttribute('disabled');
-  });
+  setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
 };
 
-var mapPinMain = map.querySelector('.map__pin--main');
+// Устанавливает координаты метки в поля ввода адреса
+var setCoordinates = function (x, y) {
+  x = parseInt(x, 10);
+  y = parseInt(x, 10);
+  x += offsetX;
+  y += offsetY;
+  form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
+};
+
+setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
+// setCoordinates(getSelector('.map__pin--main').style.left, getSelector('.map__pin--main').style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
+
+
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
-    activatedPage();
+    activatedForm();
   }
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === ENTER_KEY) {
-    activatedPage();
+    activatedForm();
   }
 });
 
-var roomNumber = form.querySelector('select #room_number');
-var capacity = form.querySelector('select #capacity');
+// Контролирует соответствие количества гостей с количеством комнат
 
-var checkValidity = function () {
-  if (capacity.value === '0' && roomNumber.value !== '100') {
-    capacity.setCustomValidity('Выберите количество гостей!');
-  } else if (roomNumber.value === '100' && capacity.value !== '0') {
-    capacity.setCustomValidity('Размещение гостей невозможно!');
-  } else if (roomNumber.value < capacity.value) {
-    capacity.setCustomValidity('Слишком много гостей!');
-  } else {
-    capacity.setCustomValidity();
+var setGuests = function (rooms) {
+  var capacity = form.querySelector('#capacity option');
+  rooms = (parseInt(rooms, 10) === (roomNumber.value < capacity.value)) ? rooms = 0 : rooms = parseInt(rooms, 10);
+  for (var i = 0; i < capacity.length; i++) {
+
+    var currentItem = parseInt(capacity[i].value, 10);
+
+    capacity[i].removeAttribute('disabled');
+    capacity[i].removeAttribute('selected');
+
+    if (currentItem > rooms || currentItem === 0) {
+      capacity[i].setAttribute('disabled', 'disabled');
+    }
+
+    if (currentItem === rooms) {
+      capacity[i].removeAttribute('disabled');
+      capacity[i].setAttribute('selected', 'selected');
+    }
   }
 };
 
-form.addEventListener('change', function () {
-  checkValidity();
+var roomNumber = form.querySelector('#room_number');
+form.querySelector('#room_number').addEventListener('change', function () {
+  setGuests(form.querySelector('#room_number').value);
 });
+
+setGuests(form.querySelector('#room_number').value);
+
+// var checkValidity = function () {
+//   if (capacity.value === '0' && roomNumber.value !== '100') {
+//     capacity.setCustomValidity('Выберите количество гостей!');
+//   } else if (roomNumber.value === '100' && capacity.value !== '0') {
+//     capacity.setCustomValidity('Размещение гостей невозможно!');
+//   } else if (roomNumber.value < capacity.value) {
+//     capacity.setCustomValidity('Слишком много гостей!');
+//   } else {
+//     capacity.setCustomValidity();
+//   }
+// };
+//
+// form.addEventListener('change', function () {
+//   checkValidity();
+// });
