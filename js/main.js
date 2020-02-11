@@ -258,26 +258,28 @@ setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, P
 //   setPrice(document.querySelector('#type').options.selectedIndex);
 // });
 
-// var typeOfHouse = form.querySelector('#type');
+var typeOfHouse = form.querySelector('#type');
 
 // Устанавливат минимальное значение для поля цена
-// var setPrice = function () {
-//   var pricePerNight = document.querySelector('#price');
-//
-//   if (typeOfHouse === 'bungalo') {
-//     pricePerNight.setAttribute('min', '0');
-//     pricePerNight.setAttribute('placeholder', '0');
-//   } else if (typeOfHouse === 'flat') {
-//     pricePerNight.setAttribute('min', '1000');
-//     pricePerNight.setAttribute('placeholder', '1000');
-//   } else if (typeOfHouse === 'house') {
-//     pricePerNight.setAttribute('min', '5000');
-//     pricePerNight.setAttribute('placeholder', '5000');
-//   } else if (typeOfHouse === 'palace') {
-//     pricePerNight.setAttribute('min', '10000');
-//     pricePerNight.setAttribute('placeholder', '10000');
-//   }
-// };
+var setPrice = function () {
+  var pricePerNight = document.querySelector('#price');
+
+  if (typeOfHouse === 'bungalo') {
+    pricePerNight.setAttribute('min', '0');
+    pricePerNight.setAttribute('placeholder', '0');
+  } else if (typeOfHouse === 'flat') {
+    pricePerNight.setAttribute('min', '1000');
+    pricePerNight.setAttribute('placeholder', '1000');
+  } else if (typeOfHouse === 'house') {
+    pricePerNight.setAttribute('min', '5000');
+    pricePerNight.setAttribute('placeholder', '5000');
+  } else if (typeOfHouse === 'palace') {
+    pricePerNight.setAttribute('min', '10000');
+    pricePerNight.setAttribute('placeholder', '10000');
+  }
+};
+
+setPrice();
 
 // Контролирует соответствие количества гостей с количеством комнат
 // var setGuests = function (rooms) {
