@@ -68,11 +68,9 @@ var PIN_MAIN_OFFSET_X = PIN_MAIN.width / 2;
 var PIN_MAIN_OFFSET_Y = PIN_MAIN.height / 2;
 var PIN_MAIN_SIZE = 65;
 var FORM_ELEMENTS = [
-  'input',
-  'select',
-  'option',
-  'textarea',
-  'button'
+  '.ad-form fieldset',
+  '.map__filters select',
+  '.map__filters fieldset'
 ];
 
 // Создает случайный элемент массива
@@ -250,41 +248,118 @@ var setCoordinates = function () {
 setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN_SIZE / 2);
 
 // Устанавливат минимальное значение для поля цена
-var setPrice = function (index) {
-  document.querySelector('#price').setAttribute('min', PRICES[index]);
-  document.querySelector('#price').setAttribute('placeholder', PRICES[index]);
-};
+// var setPrice = function (index) {
+//   document.querySelector('#price').setAttribute('min', PRICES[index]);
+//   document.querySelector('#price').setAttribute('placeholder', PRICES[index]);
+// };
+//
+// setPrice(document.querySelector('#type').options.selectedIndex);
+// document.querySelector('#type').addEventListener('change', function () {
+//   setPrice(document.querySelector('#type').options.selectedIndex);
+// });
 
-setPrice(document.querySelector('#type').options.selectedIndex);
-document.querySelector('#type').addEventListener('change', function () {
-  setPrice(document.querySelector('#type').options.selectedIndex);
-});
+// var typeOfHouse = form.querySelector('#type');
+
+// Устанавливат минимальное значение для поля цена
+// var setPrice = function () {
+//   var pricePerNight = document.querySelector('#price');
+//
+//   if (typeOfHouse === 'bungalo') {
+//     pricePerNight.setAttribute('min', '0');
+//     pricePerNight.setAttribute('placeholder', '0');
+//   } else if (typeOfHouse === 'flat') {
+//     pricePerNight.setAttribute('min', '1000');
+//     pricePerNight.setAttribute('placeholder', '1000');
+//   } else if (typeOfHouse === 'house') {
+//     pricePerNight.setAttribute('min', '5000');
+//     pricePerNight.setAttribute('placeholder', '5000');
+//   } else if (typeOfHouse === 'palace') {
+//     pricePerNight.setAttribute('min', '10000');
+//     pricePerNight.setAttribute('placeholder', '10000');
+//   }
+// };
 
 // Контролирует соответствие количества гостей с количеством комнат
-var setGuests = function (rooms) {
-  var capacity = form.querySelector('#capacity option');
-  rooms = (parseInt(rooms, 10) === (roomNumber.value < capacity.value)) ? rooms = 0 : rooms = parseInt(rooms, 10);
-  for (var i = 0; i < capacity.length; i++) {
+// var setGuests = function (rooms) {
+//   var capacity = form.querySelector('#capacity option');
+//   rooms = (parseInt(rooms, 10) === (roomNumber.value < capacity.value)) ? rooms = 0 : rooms = parseInt(rooms, 10);
+//   for (var i = 0; i < capacity.length; i++) {
+//
+//     var currentItem = parseInt(capacity[i].value, 10);
+//
+//     capacity[i].removeAttribute('disabled');
+//     capacity[i].removeAttribute('selected');
+//
+//     if (currentItem > rooms || currentItem === 0) {
+//       capacity[i].setAttribute('disabled', 'disabled');
+//     }
+//
+//     if (currentItem === rooms) {
+//       capacity[i].removeAttribute('disabled');
+//       capacity[i].setAttribute('selected', 'selected');
+//     }
+//   }
+// };
 
-    var currentItem = parseInt(capacity[i].value, 10);
+var roomNumber = form.querySelector('#room_number');
+// form.querySelector('#room_number').addEventListener('change', function () {
+//   setGuests(form.querySelector('#room_number').value);
+// });
+//
+// setGuests(form.querySelector('#room_number').value);
 
-    capacity[i].removeAttribute('disabled');
-    capacity[i].removeAttribute('selected');
+var capacity = form.querySelector('#capacity option');
 
-    if (currentItem > rooms || currentItem === 0) {
-      capacity[i].setAttribute('disabled', 'disabled');
-    }
-
-    if (currentItem === rooms) {
-      capacity[i].removeAttribute('disabled');
-      capacity[i].setAttribute('selected', 'selected');
-    }
+var capacityValidate = function () {
+  if (capacity.value === '0' && roomNumber.value !== '100') {
+    capacity.setCustomValidity('Выберите количество гостей!');
+  } else if (roomNumber.value === '100' && capacity.value !== '0') {
+    capacity.setCustomValidity('Размещение гостей невозможно!');
+  } else if (roomNumber.value < capacity.value) {
+    capacity.setCustomValidity('Слишком много гостей!');
+  } else {
+    capacity.setCustomValidity('');
   }
 };
 
-var roomNumber = form.querySelector('#room_number');
-form.querySelector('#room_number').addEventListener('change', function () {
-  setGuests(form.querySelector('#room_number').value);
+roomNumber.addEventListener('change', function (evt) {
+  capacityValidate(evt);
 });
 
-setGuests(form.querySelector('#room_number').value);
+capacity.addEventListener('change', function (evt) {
+  capacityValidate(evt);
+});
+
+// var capacityValidate = function () {
+//   if (capacity.value === '0') {
+//     roomNumber.value = 100;
+//   } else if (capacity.value === '1') {
+//     roomNumber.value = 1;
+//   } else if (capacity.value === '2') {
+//     roomNumber.value = 2;
+//   } else if (capacity.value === '3') {
+//     roomNumber.value = 3;
+//   } else {
+//    capacity.setCustomValidity('');
+//   }
+// };
+
+// form.addEventListener('change', function (evt) {
+//   capacityValidate(evt);
+// });
+
+var timeIn = form.querySelector('#timein');
+var timeOut = form.querySelector('#timeout');
+var timeInValidate = function () {
+  timeOut.selectedIndex = timeIn.selectedIndex;
+};
+var timeOutValidate = function () {
+  timeIn.selectedIndex = timeOut.selectedIndex;
+};
+
+timeIn.addEventListener('change', function (evt) {
+  timeInValidate(evt);
+});
+timeOut.addEventListener('change', function (evt) {
+  timeOutValidate(evt);
+});
