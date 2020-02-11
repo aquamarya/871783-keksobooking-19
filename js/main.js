@@ -59,8 +59,8 @@ var offsetX = PIN.width / 2;
 var offsetY = PIN.height / 2;
 var MAX_AMOUNT = 8;
 var PIN_MAIN = {
-  left: 570,
-  top: 375,
+  x: 570,
+  y: 375,
   height: 65,
   width: 65,
 };
@@ -70,6 +70,7 @@ var PIN_MAIN_SIZE = 65;
 var FORM_ELEMENTS = [
   'input',
   'select',
+  'option',
   'textarea',
   'button'
 ];
@@ -238,12 +239,12 @@ mapPinMain.addEventListener('keydown', function (evt) {
 });
 
 // Устанавливает координаты метки в поля ввода адреса
-var setCoordinates = function (x, y) {
-  x = parseInt(x, 10);
-  y = parseInt(x, 10);
-  x += PIN_MAIN_OFFSET_X;
-  y += PIN_MAIN_OFFSET_Y;
-  form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
+var setCoordinates = function () {
+  PIN_MAIN.x = parseInt(PIN_MAIN.x, 10);
+  PIN_MAIN.y = parseInt(PIN_MAIN.y, 10);
+  PIN_MAIN.x += PIN_MAIN_OFFSET_X;
+  PIN_MAIN.y += PIN_MAIN_OFFSET_Y;
+  form.querySelector('#address').value = Math.round(PIN_MAIN.x) + ', ' + Math.round(PIN_MAIN.y);
 };
 
 setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN_SIZE / 2);
