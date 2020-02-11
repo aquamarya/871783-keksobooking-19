@@ -1,8 +1,8 @@
 'use strict';
 
 var PRICES = [
-  10000,
-  50000
+  '10000',
+  '50000'
 ];
 var TYPE_OF_HOUSE = [
   'palace',
@@ -212,7 +212,7 @@ var setDisableToggle = function (data, toggle) {
     }
   }
 };
-// Отключает
+// Отключает элементы формы
 setDisableToggle(FORM_ELEMENTS, 'add');
 
 var form = document.querySelector('.ad-form');
@@ -225,17 +225,6 @@ var activatedForm = function () {
   setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
 };
 
-// Устанавливает координаты метки в поля ввода адреса
-var setCoordinates = function (x, y) {
-  x = parseInt(x, 10);
-  y = parseInt(x, 10);
-  x += PIN_MAIN_OFFSET_X;
-  y += PIN_MAIN_OFFSET_Y;
-  form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
-};
-
-setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
-
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     activatedForm();
@@ -246,6 +235,28 @@ mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     activatedForm();
   }
+});
+
+// Устанавливает координаты метки в поля ввода адреса
+var setCoordinates = function (x, y) {
+  x = parseInt(x, 10);
+  y = parseInt(x, 10);
+  x += PIN_MAIN_OFFSET_X;
+  y += PIN_MAIN_OFFSET_Y;
+  form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
+};
+
+setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN_SIZE / 2);
+
+// Устанавливат минимальное значение для поля цена
+var setPrice = function (index) {
+  document.querySelector('#price').setAttribute('min', PRICES[index]);
+  document.querySelector('#price').setAttribute('placeholder', PRICES[index]);
+};
+
+setPrice(document.querySelector('#type').options.selectedIndex);
+document.querySelector('#type').addEventListener('change', function () {
+  setPrice(document.querySelector('#type').options.selectedIndex);
 });
 
 // Контролирует соответствие количества гостей с количеством комнат
