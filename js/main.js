@@ -1,8 +1,5 @@
 'use strict';
 
-// var ESC_KEY = 'Escape';
-var ENTER_KEY = 'Enter';
-
 var PRICES = [
   10000,
   50000
@@ -64,10 +61,11 @@ var MAX_AMOUNT = 8;
 var PIN_MAIN = {
   left: 570,
   top: 375,
-  offsetX: 32,
-  offsetY: 32,
-  height: 65
+  height: 65,
+  width: 65,
 };
+var PIN_MAIN_OFFSET_X = PIN_MAIN.width / 2;
+var PIN_MAIN_OFFSET_Y = PIN_MAIN.height / 2;
 var PIN_MAIN_SIZE = 65;
 var FORM_ELEMENTS = [
   'input',
@@ -117,7 +115,7 @@ var getAdvert = function () {
   };
 };
 
-// Создает набор объявлений - mocks?
+// Создает набор объявлений
 var createAdverts = function (length) {
   for (var i = 0; i < length; i++) {
     adverts.push(getAdvert());
@@ -201,27 +199,6 @@ var renderMapPins = function (length) {
 
 renderMapPins(MAX_AMOUNT);
 
-// var form = document.querySelector('.ad-form');
-//
-// var formFieldsets = form.querySelectorAll('fieldset');
-// formFieldsets.forEach(function (fieldset) {
-//   fieldset.setAttribute('disabled', 'disabled');
-// });
-//
-// var formAddress = form.querySelector('#address');
-// formAddress.setAttribute('readonly', 'readonly');
-// formAddress.value = (PIN_MAIN.left + PIN_MAIN.offsetX) + ', ' + (PIN_MAIN.top + PIN_MAIN.offsetY);
-//
-// var mapFilterSelects = mapFiltersContainer.querySelectorAll('.map__filters select');
-// mapFilterSelects.forEach(function (select) {
-//   select.setAttribute('disabled', 'disabled');
-// });
-//
-// var mapFilterFieldsets = mapFiltersContainer.querySelectorAll('.map__filters fieldset');
-// mapFilterFieldsets.forEach(function (fieldset) {
-//   fieldset.setAttribute('disabled', 'disabled');
-// });
-
 // Включает\отключает элементы формы
 var setDisableToggle = function (data, toggle) {
   for (var i = 0; i < data.length; i++) {
@@ -252,14 +229,12 @@ var activatedForm = function () {
 var setCoordinates = function (x, y) {
   x = parseInt(x, 10);
   y = parseInt(x, 10);
-  x += offsetX;
-  y += offsetY;
+  x += PIN_MAIN_OFFSET_X;
+  y += PIN_MAIN_OFFSET_Y;
   form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
 };
 
 setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
-// setCoordinates(getSelector('.map__pin--main').style.left, getSelector('.map__pin--main').style.top, PIN_MAIN_SIZE / 2, PIN_MAIN.height);
-
 
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
@@ -268,13 +243,12 @@ mapPinMain.addEventListener('mousedown', function (evt) {
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.key === ENTER_KEY) {
+  if (evt.key === 'Enter') {
     activatedForm();
   }
 });
 
 // Контролирует соответствие количества гостей с количеством комнат
-
 var setGuests = function (rooms) {
   var capacity = form.querySelector('#capacity option');
   rooms = (parseInt(rooms, 10) === (roomNumber.value < capacity.value)) ? rooms = 0 : rooms = parseInt(rooms, 10);
@@ -302,19 +276,3 @@ form.querySelector('#room_number').addEventListener('change', function () {
 });
 
 setGuests(form.querySelector('#room_number').value);
-
-// var checkValidity = function () {
-//   if (capacity.value === '0' && roomNumber.value !== '100') {
-//     capacity.setCustomValidity('Выберите количество гостей!');
-//   } else if (roomNumber.value === '100' && capacity.value !== '0') {
-//     capacity.setCustomValidity('Размещение гостей невозможно!');
-//   } else if (roomNumber.value < capacity.value) {
-//     capacity.setCustomValidity('Слишком много гостей!');
-//   } else {
-//     capacity.setCustomValidity();
-//   }
-// };
-//
-// form.addEventListener('change', function () {
-//   checkValidity();
-// });
