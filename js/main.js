@@ -289,14 +289,12 @@ var setGuests = function (value) {
     capacity[i].removeAttribute('disabled');
     capacity[i].removeAttribute('selected');
     if (rooms === 100) {
-
+      capacity[i].setAttribute('disabled', 'disabled');
     } else {
       if (currentOption > rooms || currentOption === 0) {
         capacity[i].setAttribute('disabled', 'disabled');
-        console.log(i);
       }
       if (currentOption === rooms) {
-        console.log(i);
         capacity[i].removeAttribute('disabled');
         capacity[i].setAttribute('selected', 'selected');
       }
@@ -304,7 +302,7 @@ var setGuests = function (value) {
   }
 };
 
-var roomNumber = form.querySelector('#room_number');
+// var roomNumber = form.querySelector('#room_number');
 form.querySelector('#room_number').addEventListener('change', function () {
   setGuests(form.querySelector('#room_number').value);
 });
@@ -313,7 +311,7 @@ setGuests(form.querySelector('#room_number').value);
 
 // var capacityValidate = function () {
 //   var optionValue = form.querySelector('#capacity option').value;
-//   var capasity = form.querySelector('#capacity');
+//   var capacity = form.querySelector('#capacity');
 //   console.log(optionValue, capacity, roomNumber.value);
 //   if (optionValue === 3 && roomNumber.value !== '100') {
 //     capacity.setCustomValidity('Выберите количество гостей!');
@@ -333,20 +331,6 @@ setGuests(form.querySelector('#room_number').value);
 // capacity.addEventListener('change', function (evt) {
 //   capacityValidate(evt);
 // });
-
-// var capacityValidate = function () {
-//   if (capacity.value === '0') {
-//     roomNumber.value = 100;
-//   } else if (capacity.value === '1') {
-//     roomNumber.value = 1;
-//   } else if (capacity.value === '2') {
-//     roomNumber.value = 2;
-//   } else if (capacity.value === '3') {
-//     roomNumber.value = 3;
-//   } else {
-//    capacity.setCustomValidity('');
-//   }
-// };
 
 // form.addEventListener('change', function (evt) {
 //   capacityValidate(evt);
