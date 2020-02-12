@@ -225,7 +225,7 @@ var activatedForm = function () {
   setDisableToggle(FORM_ELEMENTS, 'remove');
   map.classList.remove('map--faded');
   form.classList.remove('ad-form--disabled');
-  setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PinMain.WIDTH / 2, PinMain.HEIGHT + PIN_MAIN_PEAK);
+  setCoordinates(PinMain.WIDTH / 2, PinMain.HEIGHT + PIN_MAIN_PEAK);
 };
 
 mapPinMain.addEventListener('mousedown', function (evt) {
@@ -241,34 +241,20 @@ mapPinMain.addEventListener('keydown', function (evt) {
 });
 
 // Устанавливает координаты метки в поля ввода адреса
-var setCoordinates = function (x, y, xCorrection, yCorrection) {
-  x = parseInt(x, 10);
-  y = parseInt(y, 10);
+var setCoordinates = function (xCorrection, yCorrection) {
+  var x = parseInt(mapPinMain.style.left, 10);
+  var y = parseInt(mapPinMain.style.top, 10);
   x += xCorrection;
   y += yCorrection;
   form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
 };
 
-setCoordinates(mapPinMain.style.left, mapPinMain.style.top, PinMain.WIDTH / 2, PinMain.HEIGHT / 2);
-
-// Устанавливат минимальное значение для поля цена
-// var setPrice = function (index) {
-//   document.querySelector('#price').setAttribute('min', PRICES[index]);
-//   document.querySelector('#price').setAttribute('placeholder', PRICES[index]);
-// };
-//
-// setPrice(document.querySelector('#type').options.selectedIndex);
-// document.querySelector('#type').addEventListener('change', function () {
-//   setPrice(document.querySelector('#type').options.selectedIndex);
-// });
+setCoordinates(PinMain.WIDTH / 2, PinMain.HEIGHT / 2);
 
 // Устанавливат минимальное значение для поля цена
 var setPrice = function () {
   var typeOfHouse = form.querySelector('#type').options.selectedIndex;
   var pricePerNight = document.querySelector('#price');
-  for (var i = 0; i < HOUSING_PRICES.length; i++) {
-    HOUSING_PRICES[i] = parseInt(HOUSING_PRICES[i], 10);
-  }
   pricePerNight.setAttribute('min', HOUSING_PRICES[typeOfHouse]);
   pricePerNight.setAttribute('placeholder', HOUSING_PRICES[typeOfHouse]);
 };
@@ -276,7 +262,7 @@ var setPrice = function () {
 setPrice();
 
 document.querySelector('#type').addEventListener('change', function () {
-  setPrice(document.querySelector('#type').options.selectedIndex);
+  setPrice();
 });
 
 // Контролирует соответствие количества гостей с количеством комнат
@@ -288,16 +274,11 @@ var setGuests = function (value) {
     var rooms = value === '100' ? 0 : parseInt(value, 10);
     capacity[i].removeAttribute('disabled');
     capacity[i].removeAttribute('selected');
-    if (rooms === 100) {
+    if (currentOption > rooms || currentOption === 0) {
       capacity[i].setAttribute('disabled', 'disabled');
-    } else {
-      if (currentOption > rooms || currentOption === 0) {
-        capacity[i].setAttribute('disabled', 'disabled');
-      }
-      if (currentOption === rooms) {
-        capacity[i].removeAttribute('disabled');
-        capacity[i].setAttribute('selected', 'selected');
-      }
+    } if (currentOption === rooms) {
+      capacity[i].removeAttribute('disabled');
+      capacity[i].setAttribute('selected', 'selected');
     }
   }
 };
@@ -308,33 +289,6 @@ form.querySelector('#room_number').addEventListener('change', function () {
 });
 
 setGuests(form.querySelector('#room_number').value);
-
-// var capacityValidate = function () {
-//   var optionValue = form.querySelector('#capacity option').value;
-//   var capacity = form.querySelector('#capacity');
-//   console.log(optionValue, capacity, roomNumber.value);
-//   if (optionValue === 3 && roomNumber.value !== '100') {
-//     capacity.setCustomValidity('Выберите количество гостей!');
-//   } else if (roomNumber.value === '100' && optionValue !== '0') {
-//     capacity.setCustomValidity('Размещение гостей невозможно!');
-//   } else if (roomNumber.value < optionValue) {
-//     capacity.setCustomValidity('Слишком много гостей!');
-//   } else {
-//     capacity.setCustomValidity('');
-//   }
-// };
-
-// roomNumber.addEventListener('change', function (evt) {
-//   capacityValidate(evt);
-// });
-
-// capacity.addEventListener('change', function (evt) {
-//   capacityValidate(evt);
-// });
-
-// form.addEventListener('change', function (evt) {
-//   capacityValidate(evt);
-// });
 
 var timeIn = form.querySelector('#timein');
 var timeOut = form.querySelector('#timeout');
