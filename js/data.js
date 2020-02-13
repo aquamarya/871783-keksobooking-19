@@ -11,12 +11,12 @@
     'house',
     'bungalo'
   ];
-  // var TYPE_OF_HOUSE_CARD = {
-  //   'palace': 'Дворец',
-  //   'flat': 'Квартира',
-  //   'house': 'Дом',
-  //   'bungalo': 'Бунгало'
-  // };
+  var TYPE_OF_HOUSE_CARD = {
+    'palace': 'Дворец',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
+  };
   var ROOMS = [
     1,
     3
@@ -114,21 +114,10 @@
   };
 
   window.data = {
-    PRICES: PRICES,
     TYPE_OF_HOUSE: TYPE_OF_HOUSE,
-    // TYPE_OF_HOUSE_CARD: TYPE_OF_HOUSE_CARD,
-    ROOMS: ROOMS,
-    GUESTS: GUESTS,
-    CHECKIN: CHECKIN,
-    CHECKOUT: CHECKOUT,
+    TYPE_OF_HOUSE_CARD: TYPE_OF_HOUSE_CARD,
     FEATURES: FEATURES,
-    PHOTOS: PHOTOS,
     HOUSING_PRICES: HOUSING_PRICES,
-    Pin: Pin,
-    MIN_X: MIN_X,
-    MAX_X: MAX_X,
-    MIN_Y: MIN_Y,
-    MAX_Y: MAX_Y,
     offsetX: offsetX,
     offsetY: offsetY,
     MAX_AMOUNT: MAX_AMOUNT,

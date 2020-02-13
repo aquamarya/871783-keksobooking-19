@@ -1,7 +1,9 @@
 'use strict';
 
 (function () {
-
+  var map = document.querySelector('.map');
+  var mapPinMain = map.querySelector('.map__pin--main');
+  var form = document.querySelector('.ad-form');
   // var mapFiltersContainer = map.querySelector('.map__filters-container');
 
   // Отрисовывает метку на карте
@@ -34,11 +36,11 @@
 
   // Устанавливает координаты метки в поля ввода адреса
   var setCoordinates = function (xCorrection, yCorrection) {
-    var x = parseInt(window.data.mapPinMain.style.left, 10);
-    var y = parseInt(window.data.mapPinMain.style.top, 10);
+    var x = parseInt(mapPinMain.style.left, 10);
+    var y = parseInt(mapPinMain.style.top, 10);
     x += xCorrection;
     y += yCorrection;
-    window.form.form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
+    form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
   };
 
   setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT / 2);
