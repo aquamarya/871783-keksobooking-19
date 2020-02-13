@@ -103,7 +103,7 @@
     timeIn: timeIn,
     timeOut: timeOut,
     timeInValidate: timeInValidate,
-    timeOutValidate: timeOutValidate
+    timeOutValidate: timeOutValidate,
   };
 
 })();
