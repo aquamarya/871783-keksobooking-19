@@ -114,9 +114,7 @@
   };
 
   window.data = {
-    TYPE_OF_HOUSE: TYPE_OF_HOUSE,
     TYPE_OF_HOUSE_CARD: TYPE_OF_HOUSE_CARD,
-    FEATURES: FEATURES,
     HOUSING_PRICES: HOUSING_PRICES,
     offsetX: offsetX,
     offsetY: offsetY,
@@ -125,7 +123,6 @@
     PIN_MAIN_PEAK: PIN_MAIN_PEAK,
     FORM_ELEMENTS: FORM_ELEMENTS,
     adverts: adverts,
-    getAdvert: getAdvert,
     createAdverts: createAdverts
   };
 

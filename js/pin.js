@@ -45,9 +45,4 @@
 
   setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT / 2);
 
-  window.pin = {
-    renderMapPin: renderMapPin,
-    renderMapPins: renderMapPins,
-    setCoordinates: setCoordinates
-  };
 })();
