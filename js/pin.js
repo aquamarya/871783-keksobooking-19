@@ -4,8 +4,7 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var form = document.querySelector('.ad-form');
-  // var MIN_X = 0 - window.data.Pin / 2;
-  // var MAX_X = 1200 - window.data.Pin / 2;
+  var address = document.querySelector('#address');
 
   // Отрисовывает метку на карте
   var renderMapPin = function (item) {
@@ -47,24 +46,20 @@
   setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT / 2);
 
   // Ограничивает перемещение метки по горизонтали
-  // var setMinMaxX = function (left) {
-  //   if (left < MIN_X) {
-  //     return MIN_X;
-  //   } else if (left < MAX_X) {
-  //     return MAX_X;
-  //   } else {
-  //     return left;
+  // var setMinMaxX = function () {
+  //   if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) >= window.data.MAX_X) {
+  //     mapPinMain.style.left = (window.data.MAX_X - window.data.Pin / 2) + 'px';
+  //   } else if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) <= 0) {
+  //     mapPinMain.style.left = (0 - window.data.Pin / 2) + 'px';
   //   }
   // };
 
   // Ограничивает перемещение метки по вертикали
-  // var setMinMaxY = function (top) {
-  //   if (top < window.data.MIN_Y) {
-  //     return window.data.MIN_Y;
-  //   } else if (top < window.data.MAX_Y) {
-  //     return window.data.MAX_Y;
-  //   } else {
-  //     return top;
+  // var setMinMaxY = function () {
+  //   if (mapPinMain.style.top > window.data.MAX_Y) {
+  //     mapPinMain.style.top = window.data.MAX_Y + 'px';
+  //   } else if (parseInt(mapPinMain.style.top, 10) < 0) {
+  //     mapPinMain.style.top = window.data.MIN_Y + 'px';
   //   }
   // };
 
@@ -90,17 +85,39 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-
+      // var top = mapPinMain.offsetTop - shift.y;
+      // var left = mapPinMain.offsetTop - shift.x;
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
+      if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) >= window.data.MAX_X) {
+        mapPinMain.style.left = (window.data.MAX_X - window.data.Pin / 2) + 'px';
+      } else if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) <= 0) {
+        mapPinMain.style.left = (0 - window.data.Pin / 2) + 'px';
+      }
+
+      if (mapPinMain.style.top > window.data.MAX_Y) {
+        mapPinMain.style.top = window.data.MAX_Y + 'px';
+      } else if (parseInt(mapPinMain.style.top, 10) < window.data.MIN_Y) {
+        mapPinMain.style.top = window.data.MIN_Y + 'px';
+      }
+      //
       // mapPinMain.style.top = setMinMaxY(top) + 'px';
       // mapPinMain.style.left = setMinMaxX(left) + 'px';
+      //
+      // address.value = setCoordinates();
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener('mousmove', onMouseMove);
+
+      address.value = setCoordinates(
+          mapPinMain.style.top,
+          mapPinMain.style.left,
+          window.data.Pin / 2,
+          window.data.Pin.height
+      );
+      document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
