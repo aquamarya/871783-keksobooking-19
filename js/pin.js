@@ -44,8 +44,8 @@
   };
 
   setCoordinates(
-    window.data.PinMain.WIDTH / 2,
-    window.data.PinMain.HEIGHT / 2
+      window.data.PinMain.WIDTH / 2,
+      window.data.PinMain.HEIGHT / 2
   );
 
   // Ограничивает перемещение метки по горизонтали
@@ -108,7 +108,7 @@
       // mapPinMain.style.top = setMinMaxY(top) + 'px';
       // mapPinMain.style.left = setMinMaxX(left) + 'px';
       //
-      console.log(address.value);
+      // console.log(address.value);
       address.value = setCoordinates(
           mapPinMain.style.top + window.data.PinMain.HEIGHT / 2,
           mapPinMain.style.left + window.data.PinMain.WIDTH / 2
@@ -117,7 +117,7 @@
 
     var onMouseUp = function () {
       // upEvt.preventDefault();
-      console.log(address.value);
+      // console.log(address.value);
       // address.value = setCoordinates();
       address.value = setCoordinates(
           mapPinMain.style.top + window.data.PinMain.HEIGHT / 2,
