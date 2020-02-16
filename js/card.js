@@ -47,6 +47,7 @@
     }
     // return mapCardElement;
   };
+
   window.card = {
     renderMapCard: renderMapCard
   };

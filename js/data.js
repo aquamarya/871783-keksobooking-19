@@ -114,6 +114,10 @@
   };
 
   window.data = {
+    Pin: Pin,
+    MAX_X: MAX_X,
+    MIN_Y: MIN_Y,
+    MAX_Y: MAX_Y,
     TYPE_OF_HOUSE_CARD: TYPE_OF_HOUSE_CARD,
     HOUSING_PRICES: HOUSING_PRICES,
     offsetX: offsetX,
