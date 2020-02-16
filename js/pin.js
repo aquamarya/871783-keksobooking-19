@@ -4,7 +4,7 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var form = document.querySelector('.ad-form');
-  var address = document.querySelector('#address');
+  // var address = document.querySelector('#address');
 
   // Отрисовывает метку на карте
   var renderMapPin = function (item) {
@@ -93,13 +93,13 @@
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
-      if (parseInt(mapPinMain.style.left + window.data.PinMain.WIDTH / 2, 10) >= window.data.MAX_X) {
+      if (parseInt(mapPinMain.style.left, 10) + window.data.PinMain.WIDTH / 2 >= window.data.MAX_X) {
         mapPinMain.style.left = (window.data.MAX_X - window.data.PinMain.WIDTH / 2) + 'px';
-      } else if (parseInt(mapPinMain.style.left + window.data.PinMain.WIDTH / 2, 10) <= 0) {
+      } else if (parseInt(mapPinMain.style.left, 10) + window.data.PinMain.WIDTH / 2 <= 0) {
         mapPinMain.style.left = (0 - window.data.PinMain.WIDTH / 2) + 'px';
       }
 
-      if (mapPinMain.style.top > window.data.MAX_Y) {
+      if (parseInt(mapPinMain.style.top, 10) > window.data.MAX_Y) {
         mapPinMain.style.top = window.data.MAX_Y + 'px';
       } else if (parseInt(mapPinMain.style.top, 10) < window.data.MIN_Y) {
         mapPinMain.style.top = window.data.MIN_Y + 'px';
@@ -109,19 +109,25 @@
       // mapPinMain.style.left = setMinMaxX(left) + 'px';
       //
       // console.log(address.value);
-      address.value = setCoordinates(
-          mapPinMain.style.top + window.data.PinMain.HEIGHT / 2,
-          mapPinMain.style.left + window.data.PinMain.WIDTH / 2
-      );
+      // address.value = setCoordinates(
+      //     window.data.PinMain.HEIGHT / 2,
+      //     window.data.PinMain.WIDTH / 2
+      // );
+
     };
 
     var onMouseUp = function () {
       // upEvt.preventDefault();
       // console.log(address.value);
       // address.value = setCoordinates();
-      address.value = setCoordinates(
-          mapPinMain.style.top + window.data.PinMain.HEIGHT / 2,
-          mapPinMain.style.left + window.data.PinMain.WIDTH / 2
+      // address.value = setCoordinates(
+      //     // console.log(xCorrection),
+      //   window.data.PinMain.HEIGHT / 2, 10)),
+      //     (parseInt(window.data.PinMain.WIDTH / 2, 10))
+      // );
+      setCoordinates(
+          window.data.PinMain.HEIGHT / 2,
+          window.data.PinMain.WIDTH / 2
       );
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
