@@ -43,7 +43,10 @@
     form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
   };
 
-  setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT / 2);
+  setCoordinates(
+    window.data.PinMain.WIDTH / 2,
+    window.data.PinMain.HEIGHT / 2
+  );
 
   // Ограничивает перемещение метки по горизонтали
   // var setMinMaxX = function () {
@@ -70,11 +73,11 @@
       y: evt.clientY
     };
 
-    var dragged = false;
+    // var dragged = false;
 
     var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      dragged = true;
+      // moveEvt.preventDefault();
+      // dragged = true;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -90,10 +93,10 @@
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
-      if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) >= window.data.MAX_X) {
-        mapPinMain.style.left = (window.data.MAX_X - window.data.Pin / 2) + 'px';
-      } else if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) <= 0) {
-        mapPinMain.style.left = (0 - window.data.Pin / 2) + 'px';
+      if (parseInt(mapPinMain.style.left + window.data.PinMain.WIDTH / 2, 10) >= window.data.MAX_X) {
+        mapPinMain.style.left = (window.data.MAX_X - window.data.PinMain.WIDTH / 2) + 'px';
+      } else if (parseInt(mapPinMain.style.left + window.data.PinMain.WIDTH / 2, 10) <= 0) {
+        mapPinMain.style.left = (0 - window.data.PinMain.WIDTH / 2) + 'px';
       }
 
       if (mapPinMain.style.top > window.data.MAX_Y) {
@@ -105,27 +108,30 @@
       // mapPinMain.style.top = setMinMaxY(top) + 'px';
       // mapPinMain.style.left = setMinMaxX(left) + 'px';
       //
-      // address.value = setCoordinates();
+      console.log(address.value);
+      address.value = setCoordinates(
+          mapPinMain.style.top + window.data.PinMain.HEIGHT / 2,
+          mapPinMain.style.left + window.data.PinMain.WIDTH / 2
+      );
     };
 
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
+    var onMouseUp = function () {
+      // upEvt.preventDefault();
+      console.log(address.value);
+      // address.value = setCoordinates();
       address.value = setCoordinates(
-          mapPinMain.style.top,
-          mapPinMain.style.left,
-          window.data.Pin / 2,
-          window.data.Pin.height
+          mapPinMain.style.top + window.data.PinMain.HEIGHT / 2,
+          mapPinMain.style.left + window.data.PinMain.WIDTH / 2
       );
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      if (dragged) {
-        var onClickPreventDefault = function (clickEvt) {
-          clickEvt.preventDefault();
-          mapPinMain.addEventListener('click', onClickPreventDefault);
-        };
-        mapPinMain.addEventListener('click', onClickPreventDefault);
-      }
+      // if (dragged) {
+      //   var onClickPreventDefault = function (clickEvt) {
+      //     clickEvt.preventDefault();
+      //     mapPinMain.addEventListener('click', onClickPreventDefault);
+      //   };
+      //   mapPinMain.addEventListener('click', onClickPreventDefault);
+      // }
     };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
