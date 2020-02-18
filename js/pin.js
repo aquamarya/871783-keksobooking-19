@@ -8,6 +8,7 @@
 
   // Отрисовывает метку на карте
   var renderMapPin = function (item) {
+    console.log(item)
     var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
     var mapPinElement = mapPinTemplate.cloneNode(true);
     mapPinElement.querySelector('img').src = item.author.avatar;
@@ -17,22 +18,26 @@
   };
 
   // Отрисовывает массив меток
-  var renderMapPins = function (length) {
+  // var renderMapPins = function (length) {
+  var renderMapPins = function (array) {
     var mapPins = document.querySelector('.map__pins');
     // var map = document.querySelector('.map');
     // var mapFiltersContainer = map.querySelector('.map__filters-container');
+    // window.upload.load(onSuccess, onError);
     var fragment = document.createDocumentFragment();
-    window.data.createAdverts(length);
-    for (var i = 0; i < length; i++) {
-      fragment.appendChild(renderMapPin(window.data.adverts[i]));
-      // if (i === 0) {
-      //   map.insertBefore(renderMapCard(window.data.adverts[0]), mapFiltersContainer);
-      // }
+    // window.data.createAdverts(array);
+
+    for (var i = 0; i < array.length; i++) {
+      console.log(array[i])
+      fragment.appendChild(renderMapPin(array[i]));
+      if (i === 0) {
+      // map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
+      }
+      mapPins.appendChild(fragment);
     }
-    mapPins.appendChild(fragment);
   };
 
-  renderMapPins(window.data.MAX_AMOUNT);
+  // renderMapPins(window.data.MAX_AMOUNT);
 
   // Устанавливает координаты метки в поля ввода адреса
   var setCoordinates = function (xCorrection, yCorrection) {
@@ -47,24 +52,6 @@
       window.data.PinMain.WIDTH / 2,
       window.data.PinMain.HEIGHT / 2
   );
-
-  // Ограничивает перемещение метки по горизонтали
-  // var setMinMaxX = function () {
-  //   if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) >= window.data.MAX_X) {
-  //     mapPinMain.style.left = (window.data.MAX_X - window.data.Pin / 2) + 'px';
-  //   } else if (parseInt(mapPinMain.style.left + window.data.Pin / 2, 10) <= 0) {
-  //     mapPinMain.style.left = (0 - window.data.Pin / 2) + 'px';
-  //   }
-  // };
-
-  // Ограничивает перемещение метки по вертикали
-  // var setMinMaxY = function () {
-  //   if (mapPinMain.style.top > window.data.MAX_Y) {
-  //     mapPinMain.style.top = window.data.MAX_Y + 'px';
-  //   } else if (parseInt(mapPinMain.style.top, 10) < 0) {
-  //     mapPinMain.style.top = window.data.MIN_Y + 'px';
-  //   }
-  // };
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -88,8 +75,7 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      // var top = mapPinMain.offsetTop - shift.y;
-      // var left = mapPinMain.offsetTop - shift.x;
+
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
@@ -104,27 +90,11 @@
       } else if (parseInt(mapPinMain.style.top, 10) < window.data.MIN_Y) {
         mapPinMain.style.top = window.data.MIN_Y + 'px';
       }
-      //
-      // mapPinMain.style.top = setMinMaxY(top) + 'px';
-      // mapPinMain.style.left = setMinMaxX(left) + 'px';
-      //
-      // console.log(address.value);
-      // address.value = setCoordinates(
-      //     window.data.PinMain.HEIGHT / 2,
-      //     window.data.PinMain.WIDTH / 2
-      // );
 
     };
 
     var onMouseUp = function () {
       // upEvt.preventDefault();
-      // console.log(address.value);
-      // address.value = setCoordinates();
-      // address.value = setCoordinates(
-      //     // console.log(xCorrection),
-      //   window.data.PinMain.HEIGHT / 2, 10)),
-      //     (parseInt(window.data.PinMain.WIDTH / 2, 10))
-      // );
       setCoordinates(
           window.data.PinMain.HEIGHT / 2,
           window.data.PinMain.WIDTH / 2
@@ -144,7 +114,9 @@
   });
 
   window.pin = {
-    setCoordinates: setCoordinates
+    setCoordinates: setCoordinates,
+    renderMapPins: renderMapPins,
+    // onSuccessLoad: onLoadSuccess
   };
 
 })();
