@@ -8,7 +8,6 @@
 
   // Отрисовывает метку на карте
   var renderMapPin = function (item) {
-    console.log(item)
     var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
     var mapPinElement = mapPinTemplate.cloneNode(true);
     mapPinElement.querySelector('img').src = item.author.avatar;
@@ -18,20 +17,15 @@
   };
 
   // Отрисовывает массив меток
-  // var renderMapPins = function (length) {
   var renderMapPins = function (array) {
     var mapPins = document.querySelector('.map__pins');
-    // var map = document.querySelector('.map');
-    // var mapFiltersContainer = map.querySelector('.map__filters-container');
-    // window.upload.load(onSuccess, onError);
+    var mapFiltersContainer = map.querySelector('.map__filters-container');
     var fragment = document.createDocumentFragment();
-    // window.data.createAdverts(array);
 
     for (var i = 0; i < array.length; i++) {
-      console.log(array[i])
       fragment.appendChild(renderMapPin(array[i]));
       if (i === 0) {
-      // map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
+        map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
       }
       mapPins.appendChild(fragment);
     }
@@ -115,8 +109,7 @@
 
   window.pin = {
     setCoordinates: setCoordinates,
-    renderMapPins: renderMapPins,
-    // onSuccessLoad: onLoadSuccess
+    renderMapPins: renderMapPins
   };
 
 })();
