@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-// Включает\отключает элементы формы
+
+  // Включает\отключает элементы формы
   var setDisableToggle = function (data, toggle) {
     for (var i = 0; i < data.length; i++) {
       var selectors = document.querySelectorAll(data[i]);
@@ -26,6 +27,7 @@
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
     window.pin.setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT + window.data.PIN_MAIN_PEAK);
+    window.load.load(window.pin.renderMapPins, window.load.onLoadError);
   };
 
   mapPinMain.addEventListener('mousedown', function (evt) {

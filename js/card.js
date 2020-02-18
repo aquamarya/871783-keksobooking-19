@@ -45,7 +45,7 @@
         cardPhotos.appendChild(cardPhotoClone);
       }
     }
-    // return mapCardElement;
+    return mapCardElement;
   };
 
   window.card = {
