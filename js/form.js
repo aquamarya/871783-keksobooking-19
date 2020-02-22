@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
+  var adForm = document.querySelector('.ad-form');
+  var mapPinMain = map.querySelector('.map__pin--main');
+  var btnReset = adForm.querySelector('.ad-form__reset');
 
   // Включает\отключает элементы формы
   var setDisableToggle = function (data, toggle) {
@@ -18,17 +22,23 @@
   // Отключает элементы формы
   setDisableToggle(window.data.FORM_ELEMENTS, 'add');
 
-  var map = document.querySelector('.map');
-  var form = document.querySelector('.ad-form');
-  var mapPinMain = map.querySelector('.map__pin--main');
-
   var activatedForm = function () {
     setDisableToggle(window.data.FORM_ELEMENTS, 'remove');
     map.classList.remove('map--faded');
-    form.classList.remove('ad-form--disabled');
+    adForm.classList.remove('ad-form--disabled');
     window.pin.setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT + window.data.PIN_MAIN_PEAK);
-    window.api.load(window.pin.renderMapPins, window.api.onLoadError, window.api.onSuccess);
+    window.api.load(window.pin.renderMapPins, window.api.onLoadError, window.api.onLoadSuccess);
   };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.api.save(new FormData(adForm), activatedForm, window.api.onLoadError);
+    evt.preventDefault();
+  });
+
+  btnReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    adForm.reset();
+  });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     if (evt.button === 0) {
@@ -44,7 +54,7 @@
 
   // Устанавливат минимальное значение для поля цена
   var setPrice = function () {
-    var typeOfHouse = form.querySelector('#type').options.selectedIndex;
+    var typeOfHouse = adForm.querySelector('#type').options.selectedIndex;
     var pricePerNight = document.querySelector('#price');
     pricePerNight.setAttribute('min', window.data.HOUSING_PRICES[typeOfHouse]);
     pricePerNight.setAttribute('placeholder', window.data.HOUSING_PRICES[typeOfHouse]);
@@ -58,7 +68,7 @@
 
   // Контролирует соответствие количества гостей с количеством комнат
   var setGuests = function (value) {
-    var capacity = form.querySelectorAll('#capacity option');
+    var capacity = adForm.querySelectorAll('#capacity option');
     // console.log(rooms, capacity);
     for (var i = 0; i < capacity.length; i++) {
       var currentOption = parseInt(capacity[i].value, 10);
@@ -75,14 +85,14 @@
   };
 
   // var roomNumber = form.querySelector('#room_number');
-  form.querySelector('#room_number').addEventListener('change', function () {
-    setGuests(form.querySelector('#room_number').value);
+  adForm.querySelector('#room_number').addEventListener('change', function () {
+    setGuests(adForm.querySelector('#room_number').value);
   });
 
-  setGuests(form.querySelector('#room_number').value);
+  setGuests(adForm.querySelector('#room_number').value);
 
-  var timeIn = form.querySelector('#timein');
-  var timeOut = form.querySelector('#timeout');
+  var timeIn = adForm.querySelector('#timein');
+  var timeOut = adForm.querySelector('#timeout');
   var timeInValidate = function () {
     timeOut.selectedIndex = timeIn.selectedIndex;
   };
@@ -97,7 +107,7 @@
     timeOutValidate(evt);
   });
 
-  window.form = {
+  window.adForm = {
     setDisableToggle: setDisableToggle,
     activatedForm: activatedForm,
     setPrice: setPrice,
