@@ -5,7 +5,10 @@
   var URL_SAVE = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 10000;
   var StatusCode = {
-    OK: 200
+    OK: 200,
+    MULTIPLE_CHOICES: 300,
+    BAD_REQUEST: 400,
+    INTERNAL_SERVER_ERROR: 500
   };
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');

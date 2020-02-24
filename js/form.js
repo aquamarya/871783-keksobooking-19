@@ -31,7 +31,7 @@
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.api.save(new FormData(adForm), activatedForm, window.api.onLoadError);
+    window.api.save(new FormData(adForm), window.api.onLoadSuccess, window.api.onLoadError);
     evt.preventDefault();
   });
 
