@@ -5,10 +5,7 @@
   var URL_SAVE = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 10000;
   var StatusCode = {
-    OK: 200,
-    MULTIPLE_CHOICES: 300,
-    BAD_REQUEST: 400,
-    INTERNAL_SERVER_ERROR: 500
+    OK: 200
   };
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -58,39 +55,44 @@
     xhr.send(formData);
   };
 
-  var onLoadError = function (errorMessage) {
+  var onLoadError = function () {
+    var onRemoveError = function () {
+      error.removeEventListener('click', onRemoveError);
+      error.remove();
+    };
     var error = errorTemplate.cloneNode(true);
-    var onLoadErrorEsc = function (evt) {
-      if (evt.key === 'Escape') {
+    error.addEventListener('click', function (event) {
+      if (event.target === event.currentTarget) {
+        onRemoveError();
+      }
+    });
+    var errorBtn = error.getElementsByClassName('error__button')[0];
+    errorBtn.onclick = function () {
+      error.remove();
+      var adForm = document.querySelector('.ad-form');
+      save(new FormData(adForm), window.api.onLoadSuccess, window.api.onLoadError);
+    };
+
+    document.onkeydown = function (event) {
+      if (event.key === 'Escape') {
         onRemoveError();
       }
     };
-    var onRemoveError = function () {
-      error.remove();
-      document.querySelector('keydown', onLoadErrorEsc);
-      document.querySelector('click', onLoadError);
-    };
-    error.querySelector('.error__massage').textContent = errorMessage;
-    document.querySelector('keydown', onLoadErrorEsc);
-    document.querySelector('click', onRemoveError);
-    document.querySelector('main').append(error);
+    document.body.append(error);
   };
 
   var onLoadSuccess = function () {
+    var onRemoveSuccess = function () {
+      success.remove();
+    };
     var success = successTemplate.cloneNode(true);
-    var onSuccessEsc = function (evt) {
-      if (evt.key === 'Escape') {
+
+    success.click(onRemoveSuccess);
+    document.onkeydown = function (event) {
+      if (event.key === 'Escape') {
         onRemoveSuccess();
       }
     };
-    var onRemoveSuccess = function () {
-      success.remove();
-      document.querySelector('keydown', onSuccessEsc);
-      document.querySelector('click', onRemoveSuccess);
-    };
-    // success.querySelector('.success__massage').textContent = successMessage;
-    document.querySelector('keydown', onSuccessEsc);
-    document.querySelector('click', onRemoveSuccess);
     document.body.append(success);
   };
 

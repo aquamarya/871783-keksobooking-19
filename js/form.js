@@ -27,7 +27,7 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     window.pin.setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT + window.data.PIN_MAIN_PEAK);
-    window.api.load(window.pin.renderMapPins, window.api.onLoadError, window.api.onLoadSuccess);
+    window.api.load(window.pin.renderMapPins, window.api.onLoadError);
   };
 
   adForm.addEventListener('submit', function (evt) {
