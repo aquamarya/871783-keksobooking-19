@@ -3,7 +3,7 @@
 (function () {
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
-  var form = document.querySelector('.ad-form');
+  var adForm = document.querySelector('.ad-form');
   // var address = document.querySelector('#address');
 
   // Отрисовывает метку на карте
@@ -39,7 +39,7 @@
     var y = parseInt(mapPinMain.style.top, 10);
     x += xCorrection;
     y += yCorrection;
-    form.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
+    adForm.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
   };
 
   setCoordinates(
