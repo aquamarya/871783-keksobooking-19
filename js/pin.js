@@ -47,27 +47,27 @@
       window.data.PinMain.HEIGHT / 2
   );
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
+  mapPinMain.addEventListener('mousedown', function (event) {
+    event.preventDefault();
     var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
+      x: event.clientX,
+      y: event.clientY
     };
 
     // var dragged = false;
 
-    var onMouseMove = function (moveEvt) {
-      // moveEvt.preventDefault();
+    var onMouseMove = function (moveEvent) {
+      // moveEvent.preventDefault();
       // dragged = true;
 
       var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        x: startCoords.x - moveEvent.clientX,
+        y: startCoords.y - moveEvent.clientY
       };
 
       startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+        x: moveEvent.clientX,
+        y: moveEvent.clientY
       };
 
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
@@ -88,7 +88,7 @@
     };
 
     var onMouseUp = function () {
-      // upEvt.preventDefault();
+      // upEvent.preventDefault();
       setCoordinates(
           window.data.PinMain.HEIGHT / 2,
           window.data.PinMain.WIDTH / 2
@@ -96,8 +96,8 @@
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       // if (dragged) {
-      //   var onClickPreventDefault = function (clickEvt) {
-      //     clickEvt.preventDefault();
+      //   var onClickPreventDefault = function (clickEvent) {
+      //     clickEvent.preventDefault();
       //     mapPinMain.addEventListener('click', onClickPreventDefault);
       //   };
       //   mapPinMain.addEventListener('click', onClickPreventDefault);
@@ -106,6 +106,27 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  var onMapPinClick = function (event) {
+    if (event.target.closest('.map__pin') && !event.target.closest('.map__pin--main')) {
+      var target = event.target.closest('.map__pin');
+      var mapPins = document.querySelectorAll('.map__pin');
+      if (!target.classList.contains('map__pin--active')) {
+        Array.from(mapPins).map(function (pin) {
+          if (pin.classList.contains('map__pin--active')) {
+            pin.classList.remove('map__pin--active');
+          }
+        });
+        target.classList.add('map__pin--active');
+      }
+      if (map.querySelector('.map__card')) {
+        var mapCard = map.querySelector('.map__card');
+        map.removeChild(mapCard);
+      }
+    }
+  };
+
+  map.addEventListener('click', onMapPinClick);
 
   window.pin = {
     setCoordinates: setCoordinates,

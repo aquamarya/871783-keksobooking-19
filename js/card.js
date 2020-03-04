@@ -2,6 +2,8 @@
 
 (function () {
 
+  var map = document.querySelector('.map');
+
   var renderMapCard = function (card) {
     var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
     var mapCardElement = mapCardTemplate.cloneNode(true);
@@ -45,6 +47,20 @@
         cardPhotos.appendChild(cardPhotoClone);
       }
     }
+
+    var mapCardElementClose = mapCardElement.querySelector('.popup__close');
+    mapCardElementClose.addEventListener('click', function () {
+      map.removeChild(mapCardElement);
+    });
+    var onMapCardClick = function (event) {
+      if (map.querySelector('.map__card') && event.key === 'Escape') {
+        var mapCard = map.querySelector('.map__card');
+        map.removeChild(mapCard);
+        document.removeEventListener('keydown', onMapCardClick);
+      }
+    };
+    document.removeEventListener('keydown', onMapCardClick);
+
     return mapCardElement;
   };
 

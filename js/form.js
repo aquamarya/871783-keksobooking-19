@@ -30,24 +30,24 @@
     window.api.load(window.pin.renderMapPins, window.api.onLoadError);
   };
 
-  adForm.addEventListener('submit', function (evt) {
+  adForm.addEventListener('submit', function (event) {
     window.api.save(new FormData(adForm), window.api.onLoadSuccess, window.api.onLoadError);
-    evt.preventDefault();
+    event.preventDefault();
   });
 
-  btnReset.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  btnReset.addEventListener('click', function (event) {
+    event.preventDefault();
     adForm.reset();
   });
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
+  mapPinMain.addEventListener('mousedown', function (event) {
+    if (event.button === 0) {
       activatedForm();
     }
   });
 
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
+  mapPinMain.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
       activatedForm();
     }
   });
@@ -100,11 +100,11 @@
     timeIn.selectedIndex = timeOut.selectedIndex;
   };
 
-  timeIn.addEventListener('change', function (evt) {
-    timeInValidate(evt);
+  timeIn.addEventListener('change', function (event) {
+    timeInValidate(event);
   });
-  timeOut.addEventListener('change', function (evt) {
-    timeOutValidate(evt);
+  timeOut.addEventListener('change', function (event) {
+    timeOutValidate(event);
   });
 
   window.adForm = {
