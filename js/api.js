@@ -78,12 +78,12 @@
         onRemoveError();
       }
     };
-    document.body.append(error);
+    document.body.appendChild(error);
   };
 
   var onLoadSuccess = function () {
     var onRemoveSuccess = function () {
-      success.remove();
+      success.removeChild();
     };
     var success = successTemplate.cloneNode(true);
 
@@ -93,7 +93,7 @@
         onRemoveSuccess();
       }
     };
-    document.body.append(success);
+    document.body.appendChild(success);
   };
 
   window.api = {

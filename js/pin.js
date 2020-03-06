@@ -1,10 +1,26 @@
 'use strict';
 
 (function () {
+  var PinMain = {
+    X: 570,
+    Y: 375,
+    HEIGHT: 65,
+    WIDTH: 65
+  };
+  var MAX_X = 1200;
+  var MIN_Y = 130;
+  var MAX_Y = 630;
+  var Pin = {
+    width: 50,
+    height: 70
+  };
+  var offsetX = Pin.width / 2;
+  var offsetY = Pin.height / 2;
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
   // var address = document.querySelector('#address');
+  var MAX_AMOUNT = 5;
 
   // Отрисовывает метку на карте
   var renderMapPin = function (item) {
@@ -12,7 +28,7 @@
     var mapPinElement = mapPinTemplate.cloneNode(true);
     mapPinElement.querySelector('img').src = item.author.avatar;
     mapPinElement.querySelector('img').alt = item.offer.title;
-    mapPinElement.style = 'left:' + ' ' + (item.location.x - window.data.offsetX) + 'px; top:' + ' ' + (item.location.y - window.data.offsetY) + 'px';
+    mapPinElement.style = 'left:' + ' ' + (item.location.x - offsetX) + 'px; top:' + ' ' + (item.location.y - offsetY) + 'px';
     return mapPinElement;
   };
 
@@ -31,7 +47,7 @@
     }
   };
 
-  // renderMapPins(window.data.MAX_AMOUNT);
+  renderMapPins(MAX_AMOUNT);
 
   // Устанавливает координаты метки в поля ввода адреса
   var setCoordinates = function (xCorrection, yCorrection) {
@@ -43,8 +59,8 @@
   };
 
   setCoordinates(
-      window.data.PinMain.WIDTH / 2,
-      window.data.PinMain.HEIGHT / 2
+      PinMain.WIDTH / 2,
+      PinMain.HEIGHT / 2
   );
 
   mapPinMain.addEventListener('mousedown', function (event) {
@@ -73,16 +89,16 @@
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
-      if (parseInt(mapPinMain.style.left, 10) + window.data.PinMain.WIDTH / 2 >= window.data.MAX_X) {
-        mapPinMain.style.left = (window.data.MAX_X - window.data.PinMain.WIDTH / 2) + 'px';
-      } else if (parseInt(mapPinMain.style.left, 10) + window.data.PinMain.WIDTH / 2 <= 0) {
-        mapPinMain.style.left = (0 - window.data.PinMain.WIDTH / 2) + 'px';
+      if (parseInt(mapPinMain.style.left, 10) + PinMain.WIDTH / 2 >= MAX_X) {
+        mapPinMain.style.left = (MAX_X - PinMain.WIDTH / 2) + 'px';
+      } else if (parseInt(mapPinMain.style.left, 10) + PinMain.WIDTH / 2 <= 0) {
+        mapPinMain.style.left = (0 - PinMain.WIDTH / 2) + 'px';
       }
 
-      if (parseInt(mapPinMain.style.top, 10) > window.data.MAX_Y) {
-        mapPinMain.style.top = window.data.MAX_Y + 'px';
-      } else if (parseInt(mapPinMain.style.top, 10) < window.data.MIN_Y) {
-        mapPinMain.style.top = window.data.MIN_Y + 'px';
+      if (parseInt(mapPinMain.style.top, 10) > MAX_Y) {
+        mapPinMain.style.top = MAX_Y + 'px';
+      } else if (parseInt(mapPinMain.style.top, 10) < MIN_Y) {
+        mapPinMain.style.top = MIN_Y + 'px';
       }
 
     };
@@ -90,8 +106,8 @@
     var onMouseUp = function () {
       // upEvent.preventDefault();
       setCoordinates(
-          window.data.PinMain.HEIGHT / 2,
-          window.data.PinMain.WIDTH / 2
+          PinMain.HEIGHT / 2,
+          PinMain.WIDTH / 2
       );
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
@@ -130,7 +146,9 @@
 
   window.pin = {
     setCoordinates: setCoordinates,
-    renderMapPins: renderMapPins
+    renderMapPins: renderMapPins,
+    MAX_AMOUNT: MAX_AMOUNT,
+    PinMain: PinMain
   };
 
 })();

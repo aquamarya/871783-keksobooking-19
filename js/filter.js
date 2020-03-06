@@ -24,11 +24,6 @@
     'conditioner'
   ];
 
-  var renderAdverts = function (data) {
-    window.pin.renderMapPins(data);
-    adverts = data;
-  };
-
   var onFilterChange = function (event) {
     switch (event.target.value) {
       case event.target.id === housingType.id:
@@ -65,37 +60,50 @@
     }
   };
 
-  var filterByFeatures = function (key, item) {
+  var filterByRooms = function (advert) {
+    return housingRooms.value === defaultFilter ? true : housingRooms.value === advert.offer.rooms.toString();
+  };
+
+  var filterByGuests = function (advert) {
+    return housingGuests.value === defaultFilter ? true : housingGuests.value === advert.offer.guests.toString();
+  };
+
+  var filterByFeatures = function (advert) {
     for (var featureIndex = 0; featureIndex < ADVERT_FEATURES.length; featureIndex++) {
       filteredAdverts = filteredAdverts.filter(filterByFeatures(ADVERT_FEATURES[featureIndex]));
     }
-    return housingFeatures.value === defaultFilter ? true : housingFeatures.value === item.offer[key].toString();
+    return housingFeatures.value === defaultFilter ? true : housingFeatures.value === advert.offer.features.toString();
   };
 
-  var filterByRoomsNumber = function () {
 
-  };
-
-  var filterByGuestsNumber = function () {
-
+  var renderAdverts = function (data) {
+    adverts = data;
+    window.pin.renderMapPins(adverts.slice(0, window.pin.MAX_AMOUNT));
   };
 
   var getAdverts = function () {
     return adverts;
   };
+
   var filteredAdverts = getAdverts();
 
   var getFilteredAdverts = function () {
     filteredAdverts
       .filter(filterByHouseType)
       .filter(filterByPrice)
-      .filter(filterByRoomsNumber)
-      .filter(filterByGuestsNumber)
+      .filter(filterByRooms)
+      .filter(filterByGuests)
       .filter(filterByFeatures);
 
     return filteredAdverts;
   };
 
   formFilters.addEventListener('change', window.util.debounce(getFilteredAdverts));
+  // formFilters.addEventListener('change', onFilterChange);
+  // formFilters.removeEventListener('change', onFilterChange);
 
+  window.filter = {
+    onFilterChange: onFilterChange,
+    renderAdverts: renderAdverts
+  };
 })();

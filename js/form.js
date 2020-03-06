@@ -1,10 +1,19 @@
 'use strict';
 
 (function () {
+  var PIN_MAIN_PEAK = 20;
+  var FORM_ELEMENTS = [
+    '.ad-form fieldset',
+    '.map__filters select',
+    '.map__filters fieldset'
+  ];
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = map.querySelector('.map__pin--main');
   var btnReset = adForm.querySelector('.ad-form__reset');
+  var formFilters = document.querySelector('.map__filters');
+  var timeIn = adForm.querySelector('#timein');
+  var timeOut = adForm.querySelector('#timeout');
 
   // Включает\отключает элементы формы
   var setDisableToggle = function (data, toggle) {
@@ -20,14 +29,16 @@
     }
   };
   // Отключает элементы формы
-  setDisableToggle(window.data.FORM_ELEMENTS, 'add');
+  setDisableToggle(FORM_ELEMENTS, 'add');
 
   var activatedForm = function () {
-    setDisableToggle(window.data.FORM_ELEMENTS, 'remove');
+    setDisableToggle(FORM_ELEMENTS, 'remove');
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    window.pin.setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT + window.data.PIN_MAIN_PEAK);
-    window.api.load(window.pin.renderMapPins, window.api.onLoadError);
+    window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
+    // window.api.load(window.pin.renderMapPins, window.api.onLoadError);
+    window.api.load(window.filter.renderAdverts, window.api.onLoadError);
+    formFilters.addEventListener('change', window.filter.onFilterChange);
   };
 
   adForm.addEventListener('submit', function (event) {
@@ -91,8 +102,6 @@
 
   setGuests(adForm.querySelector('#room_number').value);
 
-  var timeIn = adForm.querySelector('#timein');
-  var timeOut = adForm.querySelector('#timeout');
   var timeInValidate = function () {
     timeOut.selectedIndex = timeIn.selectedIndex;
   };
