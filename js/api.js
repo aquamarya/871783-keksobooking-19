@@ -81,13 +81,33 @@
     document.body.appendChild(error);
   };
 
+  // var onLoadSuccess = function () {
+  //   var onRemoveSuccess = function () {
+  //     success.remove();
+  //   };
+  //   var success = successTemplate.cloneNode(true);
+  //
+  //   success.click(onRemoveSuccess);
+  //   document.onkeydown = function (event) {
+  //     if (event.key === 'Escape') {
+  //       onRemoveSuccess();
+  //     }
+  //   };
+  //   document.body.appendChild(success);
+  // };
+
   var onLoadSuccess = function () {
     var onRemoveSuccess = function () {
-      success.removeChild();
+      success.removeEventListener('click', onRemoveSuccess);
+      success.remove();
     };
     var success = successTemplate.cloneNode(true);
+    success.addEventListener('click', function (event) {
+      if (event.target === event.currentTarget) {
+        onRemoveSuccess();
+      }
+    });
 
-    success.click(onRemoveSuccess);
     document.onkeydown = function (event) {
       if (event.key === 'Escape') {
         onRemoveSuccess();
