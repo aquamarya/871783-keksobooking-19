@@ -54,18 +54,18 @@
       }
     }
 
-    var mapCardElementClose = mapCardElement.querySelector('.popup__close');
-    mapCardElementClose.addEventListener('click', function () {
-      map.remove(mapCardElement);
-    });
-    var onMapCardClick = function (event) {
-      if (map.querySelector('.map__card') && event.key === 'Escape') {
-        var mapCard = map.querySelector('.map__card');
-        map.remove(mapCard);
-        document.removeEventListener('keydown', onMapCardClick);
-      }
-    };
-    document.removeEventListener('keydown', onMapCardClick);
+    // var mapCardElementClose = mapCardElement.querySelector('.popup__close');
+    // mapCardElementClose.addEventListener('click', function () {
+    //   map.remove(mapCardElement);
+    // });
+    // var onMapCardClick = function (event) {
+    //   if (map.querySelector('.map__card') && event.key === 'Escape') {
+    //     var mapCard = map.querySelector('.map__card');
+    //     map.remove(mapCard);
+    //     document.removeEventListener('keydown', onMapCardClick);
+    //   }
+    // };
+    // document.removeEventListener('keydown', onMapCardClick);
 
     return mapCardElement;
   };

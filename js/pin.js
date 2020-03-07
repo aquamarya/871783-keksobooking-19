@@ -123,26 +123,26 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var onMapPinClick = function (event) {
-    if (event.target.closest('.map__pin') && !event.target.closest('.map__pin--main')) {
-      var target = event.target.closest('.map__pin');
-      var mapPins = document.querySelectorAll('.map__pin');
-      if (!target.classList.contains('map__pin--active')) {
-        Array.from(mapPins).map(function (pin) {
-          if (pin.classList.contains('map__pin--active')) {
-            pin.classList.remove('map__pin--active');
-          }
-        });
-        target.classList.add('map__pin--active');
-      }
-      if (map.querySelector('.map__card')) {
-        var mapCard = map.querySelector('.map__card');
-        map.removeChild(mapCard);
-      }
-    }
-  };
-
-  map.addEventListener('click', onMapPinClick);
+  // var onMapPinClick = function (event) {
+  //   if (event.target.closest('.map__pin') && !event.target.closest('.map__pin--main')) {
+  //     var target = event.target.closest('.map__pin');
+  //     var mapPins = document.querySelectorAll('.map__pin');
+  //     if (!target.classList.contains('map__pin--active')) {
+  //       Array.from(mapPins).map(function (pin) {
+  //         if (pin.classList.contains('map__pin--active')) {
+  //           pin.classList.remove('map__pin--active');
+  //         }
+  //       });
+  //       target.classList.add('map__pin--active');
+  //     }
+  //     if (map.querySelector('.map__card')) {
+  //       var mapCard = map.querySelector('.map__card');
+  //       map.removeChild(mapCard);
+  //     }
+  //   }
+  // };
+  //
+  // map.addEventListener('click', onMapPinClick);
 
   window.pin = {
     setCoordinates: setCoordinates,
