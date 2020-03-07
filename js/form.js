@@ -2,6 +2,12 @@
 
 (function () {
   var PIN_MAIN_PEAK = 20;
+  var HOUSING_PRICES = [
+    0,
+    1000,
+    5000,
+    10000
+  ];
   var FORM_ELEMENTS = [
     '.ad-form fieldset',
     '.map__filters select',
@@ -36,9 +42,9 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
-    window.api.load(window.pin.renderMapPins, window.api.onLoadError);
-    // window.api.load(window.filter.renderAdverts, window.api.onLoadError);
-    // formFilters.addEventListener('change', window.filter.onFilterChange);
+    // window.api.load(window.pin.renderMapPins, window.api.onLoadError);
+    window.api.load(window.filter.renderAdverts, window.api.onLoadError);
+    formFilters.addEventListener('change', window.filter.onFilterChange);
   };
 
   adForm.addEventListener('submit', function (event) {
@@ -67,8 +73,8 @@
   var setPrice = function () {
     var typeOfHouse = adForm.querySelector('#type').options.selectedIndex;
     var pricePerNight = document.querySelector('#price');
-    pricePerNight.setAttribute('min', window.data.HOUSING_PRICES[typeOfHouse]);
-    pricePerNight.setAttribute('placeholder', window.data.HOUSING_PRICES[typeOfHouse]);
+    pricePerNight.setAttribute('min', HOUSING_PRICES[typeOfHouse]);
+    pricePerNight.setAttribute('placeholder', HOUSING_PRICES[typeOfHouse]);
   };
 
   setPrice();
