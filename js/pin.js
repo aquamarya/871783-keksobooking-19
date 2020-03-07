@@ -18,6 +18,7 @@
   var offsetY = Pin.height / 2;
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
+  var mapPins = document.querySelector('.map__pins');
   var adForm = document.querySelector('.ad-form');
   // var address = document.querySelector('#address');
   var MAX_AMOUNT = 5;
@@ -33,21 +34,28 @@
   };
 
   // Отрисовывает массив меток
-  var renderMapPins = function (array) {
-    var mapPins = document.querySelector('.map__pins');
-    var mapFiltersContainer = map.querySelector('.map__filters-container');
-    var fragment = document.createDocumentFragment();
+  var renderMapPins = function (adverts) {
+    // var mapFiltersContainer = map.querySelector('.map__filters-container');
 
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(renderMapPin(array[i]));
-      if (i === 0) {
-        map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
-      }
-      mapPins.appendChild(fragment);
+    // for (var i = 0; i < array.length; i++) {
+    //   fragment.appendChild(renderMapPin(array[i]));
+    //   if (i === 0) {
+    //     map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
+    //   }
+    if (adverts.length > MAX_AMOUNT) {
+      adverts = adverts.slice(0, MAX_AMOUNT);
     }
+    var fragment = document.createDocumentFragment();
+    adverts.forEach(function (advert) {
+      if (advert.offer) {
+        fragment.appendChild(renderMapPin(advert));
+      }
+    });
+    mapPins.appendChild(fragment);
+    // }
   };
 
-  renderMapPins(MAX_AMOUNT);
+  // renderMapPins(MAX_AMOUNT);
 
   // Устанавливает координаты метки в поля ввода адреса
   var setCoordinates = function (xCorrection, yCorrection) {
@@ -123,10 +131,23 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  // var removePinActive = function () {
+  //   var pinActive = document.querySelector('.map__pin--active');
+  //   if (pinActive) {
+  //     pinActive.classList.remove('.map__pin--active');
+  //   }
+  // };
+
+  // var closeCard = function () {
+  //   document.removeEventListener('keydown', window.card.onMapCardClick);
+  //   document.querySelector('.map__card').remove();
+  //   removePinActive();
+  // };
+
   var onMapPinClick = function (event) {
     if (event.target.closest('.map__pin') && !event.target.closest('.map__pin--main')) {
       var target = event.target.closest('.map__pin');
-      var mapPins = document.querySelectorAll('.map__pin');
+      var mapPins = document.querySelector('.map__pins');
       if (!target.classList.contains('map__pin--active')) {
         Array.from(mapPins).map(function (pin) {
           if (pin.classList.contains('map__pin--active')) {
