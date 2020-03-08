@@ -3,6 +3,8 @@
 (function () {
 
   var map = document.querySelector('.map');
+  var mapFiltersContainer = map.querySelector('.map__filters-container');
+
   var TYPE_OF_HOUSE_CARD = {
     'palace': 'Дворец',
     'flat': 'Квартира',
@@ -10,9 +12,12 @@
     'bungalo': 'Бунгало'
   };
 
+  var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var mapCardElement = mapCardTemplate.cloneNode(true);
+
   var renderMapCard = function (card) {
-    var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-    var mapCardElement = mapCardTemplate.cloneNode(true);
+    // var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+    // var mapCardElement = mapCardTemplate.cloneNode(true);
     var popupFeatures = mapCardElement.querySelector('.popup__features');
     var popupFeatureTemplate = Array.from(popupFeatures.childNodes);
     var features = card.offer.features;
@@ -54,23 +59,42 @@
       }
     }
 
-    var mapCardElementClose = mapCardElement.querySelector('.popup__close');
-    mapCardElementClose.addEventListener('click', function () {
-      map.remove(mapCardElement);
-    });
-    var onMapCardClick = function (event) {
-      if (map.querySelector('.map__card') && event.key === 'Escape') {
-        var mapCard = map.querySelector('.map__card');
-        map.remove(mapCard);
-        document.removeEventListener('keydown', onMapCardClick);
+    var onRemoveCard = function () {
+      removeMapCard();
+      document.removeEventListener('keydown', onRemoveCardEsc);
+    };
+
+    var onRemoveCardEsc = function (event) {
+      if (event.key === 'Escape') {
+        onRemoveCard();
       }
     };
-    document.removeEventListener('keydown', onMapCardClick);
+
+    var mapCardElementClose = mapCardElement.querySelector('.popup__close');
+    mapCardElementClose.addEventListener('click', onRemoveCard);
+    document.addEventListener('keydown', onRemoveCardEsc);
 
     return mapCardElement;
   };
 
+  // Показывает карточку объявления
+  var showMapCard = function () {
+    removeMapCard();
+    window.pin.removePinActive();
+    mapFiltersContainer.before(mapCardElement);
+  };
+
+  // Удаляет карточку объявления
+  var removeMapCard = function () {
+    if (mapCardElement) {
+      mapCardElement.remove();
+    }
+  };
+
   window.card = {
+    removeMapCard: removeMapCard,
+    showMapCard: showMapCard,
     renderMapCard: renderMapCard
   };
+
 })();

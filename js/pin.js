@@ -20,7 +20,6 @@
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapPins = document.querySelector('.map__pins');
   var adForm = document.querySelector('.ad-form');
-  // var address = document.querySelector('#address');
   var MAX_AMOUNT = 5;
 
   // Отрисовывает метку на карте
@@ -30,7 +29,32 @@
     mapPinElement.querySelector('img').src = item.author.avatar;
     mapPinElement.querySelector('img').alt = item.offer.title;
     mapPinElement.style = 'left:' + ' ' + (item.location.x - offsetX) + 'px; top:' + ' ' + (item.location.y - offsetY) + 'px';
+
+
+    mapPinElement.addEventListener('keydown', mapPinElementKeydown);
+    function mapPinElementKeydown(event) {
+      if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
+        window.card.showMapCard(item);
+        mapPinElement.classList.add('map__pin--active');
+      }
+    }
+
+    mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
+    function mapPinElementMousedown(event) {
+      if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
+        window.card.showMapCard(item);
+        mapPinElement.classList.add('map__pin--active');
+      }
+    }
+
     return mapPinElement;
+  };
+
+  var removePinActive = function () {
+    var pinActive = document.querySelector('.map__pin--active');
+    if (pinActive) {
+      pinActive.classList.remove('.map__pin--active');
+    }
   };
 
   // Отрисовывает массив меток
@@ -81,9 +105,6 @@
     // var dragged = false;
 
     var onMouseMove = function (moveEvent) {
-      // moveEvent.preventDefault();
-      // dragged = true;
-
       var shift = {
         x: startCoords.x - moveEvent.clientX,
         y: startCoords.y - moveEvent.clientY
@@ -112,64 +133,33 @@
     };
 
     var onMouseUp = function () {
-      // upEvent.preventDefault();
       setCoordinates(
           PinMain.HEIGHT / 2,
           PinMain.WIDTH / 2
       );
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      // if (dragged) {
-      //   var onClickPreventDefault = function (clickEvent) {
-      //     clickEvent.preventDefault();
-      //     mapPinMain.addEventListener('click', onClickPreventDefault);
-      //   };
-      //   mapPinMain.addEventListener('click', onClickPreventDefault);
-      // }
     };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  // var removePinActive = function () {
-  //   var pinActive = document.querySelector('.map__pin--active');
-  //   if (pinActive) {
-  //     pinActive.classList.remove('.map__pin--active');
-  //   }
-  // };
-
-  // var closeCard = function () {
-  //   document.removeEventListener('keydown', window.card.onMapCardClick);
-  //   document.querySelector('.map__card').remove();
-  //   removePinActive();
-  // };
-
-  var onMapPinClick = function (event) {
-    if (event.target.closest('.map__pin') && !event.target.closest('.map__pin--main')) {
-      var target = event.target.closest('.map__pin');
-      var mapPins = document.querySelector('.map__pins');
-      if (!target.classList.contains('map__pin--active')) {
-        Array.from(mapPins).map(function (pin) {
-          if (pin.classList.contains('map__pin--active')) {
-            pin.classList.remove('map__pin--active');
-          }
-        });
-        target.classList.add('map__pin--active');
+  // Удаляет старые метки
+  function removePins() {
+    mapPins.forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        pin.remove();
       }
-      if (map.querySelector('.map__card')) {
-        var mapCard = map.querySelector('.map__card');
-        map.removeChild(mapCard);
-      }
-    }
-  };
-
-  map.addEventListener('click', onMapPinClick);
+    });
+  }
 
   window.pin = {
     setCoordinates: setCoordinates,
     renderMapPins: renderMapPins,
+    removePinActive: removePinActive,
     MAX_AMOUNT: MAX_AMOUNT,
-    PinMain: PinMain
+    PinMain: PinMain,
+    removePins: removePins
   };
 
 })();

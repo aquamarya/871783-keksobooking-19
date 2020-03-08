@@ -94,7 +94,7 @@
       .filter(filterByRooms)
       .filter(filterByGuests)
       .filter(filterByFeatures);
-
+    // console.log(filteredAdverts);
     return filteredAdverts;
   };
 
