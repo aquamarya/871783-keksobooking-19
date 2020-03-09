@@ -97,6 +97,12 @@
     // console.log(filteredAdverts);
     return filteredAdverts;
   };
+  //
+  // var updateAdverts = function () {
+  //   window.card.removeMapCard();
+  //   window.pin.removePins();
+  //   window.pin.renderMapPins(getFilteredAdverts);
+  // };
 
   formFilters.addEventListener('change', window.util.debounce(getFilteredAdverts));
   // formFilters.addEventListener('change', onFilterChange);

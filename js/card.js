@@ -59,23 +59,23 @@
       }
     }
 
-    var onRemoveCard = function () {
-      removeMapCard();
-      document.removeEventListener('keydown', onRemoveCardEsc);
-    };
-
-    var onRemoveCardEsc = function (event) {
-      if (event.key === 'Escape') {
-        onRemoveCard();
-      }
-    };
-
-    var mapCardElementClose = mapCardElement.querySelector('.popup__close');
-    mapCardElementClose.addEventListener('click', onRemoveCard);
-    document.addEventListener('keydown', onRemoveCardEsc);
-
     return mapCardElement;
   };
+
+  var onRemoveMapCard = function () {
+    removeMapCard();
+    document.removeEventListener('keydown', onRemoveMapCardEsc);
+  };
+
+  var onRemoveMapCardEsc = function (event) {
+    if (event.key === 'Escape') {
+      onRemoveMapCard();
+    }
+  };
+
+  var mapCardClose = mapCardElement.querySelector('.popup__close');
+  mapCardClose.addEventListener('click', onRemoveMapCard);
+  document.addEventListener('keydown', onRemoveMapCardEsc);
 
   // Показывает карточку объявления
   var showMapCard = function () {
@@ -86,8 +86,9 @@
 
   // Удаляет карточку объявления
   var removeMapCard = function () {
-    if (mapCardElement) {
-      mapCardElement.remove();
+    var mapCard = map.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
     }
   };
 

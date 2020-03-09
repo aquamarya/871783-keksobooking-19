@@ -42,8 +42,8 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
-    // window.api.load(window.pin.renderMapPins, window.api.onLoadError);
-    window.api.load(window.filter.renderAdverts, window.api.onLoadError);
+    window.api.load(window.pin.renderMapPins, window.api.onLoadError);
+    // window.api.load(window.filter.renderAdverts, window.api.onLoadError);
     formFilters.addEventListener('change', window.filter.onFilterChange);
   };
 
