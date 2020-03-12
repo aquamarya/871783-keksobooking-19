@@ -30,32 +30,62 @@
     mapPinElement.querySelector('img').alt = item.offer.title;
     mapPinElement.style = 'left:' + ' ' + (item.location.x - offsetX) + 'px; top:' + ' ' + (item.location.y - offsetY) + 'px';
 
-
     mapPinElement.addEventListener('keydown', mapPinElementKeydown);
     function mapPinElementKeydown(event) {
       if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
+        // var items = Array.from(document.querySelectorAll('.map__pin'));
+        // for (let item of items) {
+        //   if (!item === mapPinElement) {
+        //     item.classList.remove('map__pin--active');
+        //   }
+        // }
         window.card.showMapCard(item);
-        mapPinElement.classList.add('map__pin--active');
+        // mapPinElement.classList.add('map__pin--active');
       }
     }
 
     mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
     function mapPinElementMousedown(event) {
       if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
+        // var items = Array.from(document.querySelectorAll('.map__pin'));
+        // for (let item of items) {
+        //   if (!item === mapPinElement) {
+        //     item.classList.remove('map__pin--active');
+        //   }
+        // }
         window.card.showMapCard(item);
-        mapPinElement.classList.add('map__pin--active');
+        // mapPinElement.classList.add('map__pin--active');
       }
     }
+
+    // mapPinElement.addEventListener('keydown', mapPinElementKeydown);
+    // function mapPinElementKeydown(event) {
+    //   if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
+    //     mapPinTemplate.classList.remove('map__pin--active');
+    //     window.card.showMapCard(item);
+    //     mapPinElement.classList.add('map__pin--active');
+    //   }
+    // }
+
+    // mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
+    // function mapPinElementMousedown(event) {
+    //   if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
+    //     mapPinTemplate.classList.remove('map__pin--active');
+    //     console.log(mapPinElement);
+    //     window.card.showMapCard(item);
+    //     mapPinElement.classList.add('map__pin--active');
+    //   }
+    // }
 
     return mapPinElement;
   };
 
-  var removePinActive = function () {
-    var pinActive = document.querySelector('.map__pin--active');
-    if (pinActive) {
-      pinActive.classList.remove('.map__pin--active');
-    }
-  };
+  // var removePinActive = function () {
+  //   var pinActive = document.querySelector('.map__pin--active');
+  //   if (pinActive) {
+  //     pinActive.classList.remove('.map__pin--active');
+  //   }
+  // };
 
   // Отрисовывает массив меток
   var renderMapPins = function (adverts) {
@@ -78,6 +108,39 @@
     mapPins.appendChild(fragment);
     // }
   };
+
+  // var renderMapPins = function (adverts) {
+  //   if (adverts.length > MAX_AMOUNT) {
+  //     adverts = adverts.slice(0, MAX_AMOUNT);
+  //   }
+  //   var fragment = document.createDocumentFragment();
+  //   adverts.forEach(function (advert) {
+  //     if (advert.offer) {
+  //       var pin = renderMapPin(advert);
+  //       pin.addEventListener('click', function () {
+  //         mapPinTemplate.forEach(function (mapPinElement) {
+  //           if (mapPinElement.classList.contains('map__pin--active')) {
+  //             mapPinElement.classList.remove('map__pin--active');
+  //           }
+  //         });
+  //         pin.classList.add('map__pin--active');
+  //         window.card.removeMapCard();
+  //         window.card.renderMapCard(advert);
+  //       });
+  //       fragment.appendChild(pin);
+  //     }
+  //   });
+  //   mapPins.appendChild(fragment);
+  // };
+
+  // Удаляет старые метки
+  function removePins() {
+    mapPins.forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        pin.remove();
+      }
+    });
+  }
 
   // renderMapPins(MAX_AMOUNT);
 
@@ -144,19 +207,10 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  // Удаляет старые метки
-  function removePins() {
-    mapPins.forEach(function (pin) {
-      if (!pin.classList.contains('map__pin--main')) {
-        pin.remove();
-      }
-    });
-  }
-
   window.pin = {
     setCoordinates: setCoordinates,
     renderMapPins: renderMapPins,
-    removePinActive: removePinActive,
+    // removePinActive: removePinActive,
     MAX_AMOUNT: MAX_AMOUNT,
     PinMain: PinMain,
     removePins: removePins
