@@ -34,14 +34,15 @@
     mapPinElement.addEventListener('keydown', mapPinElementKeydown);
     function mapPinElementKeydown(event) {
       if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
-        // var items = Array.from(document.querySelectorAll('.map__pin'));
-        // for (let item of items) {
-        //   if (!item === mapPinElement) {
-        //     item.classList.remove('map__pin--active');
-        //   }
-        // }
+        var items = Array.from(document.querySelectorAll('.map__pin'));
+        for (let item of items) {
+        // for (item in items) {
+          if (!item === mapPinElement) {
+            item.classList.remove('map__pin--active');
+          }
+        }
         window.card.showMapCard(item);
-        // mapPinElement.classList.add('map__pin--active');
+        mapPinElement.classList.add('map__pin--active');
       }
     }
 
@@ -50,6 +51,7 @@
       if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
         var items = Array.from(document.querySelectorAll('.map__pin'));
         for (let item of items) {
+        // for (item in items) {
           if (item !== mapPinElement) {
             item.classList.remove('map__pin--active');
           }
@@ -59,25 +61,6 @@
         console.log(mapPinElement);
       }
     }
-
-    // mapPinElement.addEventListener('keydown', mapPinElementKeydown);
-    // function mapPinElementKeydown(event) {
-    //   if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
-    //     mapPinTemplate.classList.remove('map__pin--active');
-    //     window.card.showMapCard(item);
-    //     mapPinElement.classList.add('map__pin--active');
-    //   }
-    // }
-
-    // mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
-    // function mapPinElementMousedown(event) {
-    //   if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
-    //     mapPinTemplate.classList.remove('map__pin--active');
-    //     console.log(mapPinElement);
-    //     window.card.showMapCard(item);
-    //     mapPinElement.classList.add('map__pin--active');
-    //   }
-    // }
 
     return mapPinElement;
   };
