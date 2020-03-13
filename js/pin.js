@@ -19,6 +19,7 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapPins = document.querySelector('.map__pins');
+  var allPins = document.getElementsByClassName('map__pin');
   var adForm = document.querySelector('.ad-form');
   var MAX_AMOUNT = 5;
 
@@ -47,14 +48,15 @@
     mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
     function mapPinElementMousedown(event) {
       if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
-        // var items = Array.from(document.querySelectorAll('.map__pin'));
-        // for (let item of items) {
-        //   if (!item === mapPinElement) {
-        //     item.classList.remove('map__pin--active');
-        //   }
-        // }
+        var items = Array.from(document.querySelectorAll('.map__pin'));
+        for (let item of items) {
+          if (item !== mapPinElement) {
+            item.classList.remove('map__pin--active');
+          }
+        }
         window.card.showMapCard(item);
-        // mapPinElement.classList.add('map__pin--active');
+        mapPinElement.classList.add('map__pin--active');
+        console.log(mapPinElement);
       }
     }
 
@@ -89,6 +91,7 @@
 
   // Отрисовывает массив меток
   var renderMapPins = function (adverts) {
+    console.log(adverts);
     // var mapFiltersContainer = map.querySelector('.map__filters-container');
 
     // for (var i = 0; i < array.length; i++) {
@@ -96,46 +99,26 @@
     //   if (i === 0) {
     //     map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
     //   }
-    if (adverts.length > MAX_AMOUNT) {
-      adverts = adverts.slice(0, MAX_AMOUNT);
+    var ads = adverts;
+    if (ads.length > MAX_AMOUNT) {
+      ads = ads.slice(0, MAX_AMOUNT);
     }
+    console.log(ads);
     var fragment = document.createDocumentFragment();
-    adverts.forEach(function (advert) {
+    ads.forEach(function (advert) {
       if (advert.offer) {
         fragment.appendChild(renderMapPin(advert));
       }
     });
     mapPins.appendChild(fragment);
+
+
     // }
   };
 
-  // var renderMapPins = function (adverts) {
-  //   if (adverts.length > MAX_AMOUNT) {
-  //     adverts = adverts.slice(0, MAX_AMOUNT);
-  //   }
-  //   var fragment = document.createDocumentFragment();
-  //   adverts.forEach(function (advert) {
-  //     if (advert.offer) {
-  //       var pin = renderMapPin(advert);
-  //       pin.addEventListener('click', function () {
-  //         mapPinTemplate.forEach(function (mapPinElement) {
-  //           if (mapPinElement.classList.contains('map__pin--active')) {
-  //             mapPinElement.classList.remove('map__pin--active');
-  //           }
-  //         });
-  //         pin.classList.add('map__pin--active');
-  //         window.card.removeMapCard();
-  //         window.card.renderMapCard(advert);
-  //       });
-  //       fragment.appendChild(pin);
-  //     }
-  //   });
-  //   mapPins.appendChild(fragment);
-  // };
-
   // Удаляет старые метки
   function removePins() {
-    mapPins.forEach(function (pin) {
+    Array.from(allPins).forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         pin.remove();
       }

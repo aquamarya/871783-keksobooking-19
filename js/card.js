@@ -62,6 +62,35 @@
     return mapCardElement;
   };
 
+  // var getAds = function (data) {
+  //   var mapPins = document.querySelector('.map__pins');
+  //   var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+  //   var showMapCard = function (index) {
+  //     var activeCard = document.querySelector('.map__card');
+  //     if (activeCard) {
+  //       activeCard.remove();
+  //     }
+  //     renderMapCard(data, index);
+  //     var mapCardClose = mapCardElement.querySelector('.popup__close');
+  //     mapCardClose.addEventListener('click', onRemoveMapCard);
+  //     document.addEventListener('keydown', onRemoveMapCardEsc);
+  //   };
+  //   var onRemoveMapCard = function () {
+  //     removeMapCard();
+  //     document.removeEventListener('keydown', onRemoveMapCardEsc);
+  //   };
+  //   var onRemoveMapCardEsc = function (event) {
+  //     if (event.key === 'Escape') {
+  //       onRemoveMapCard();
+  //     }
+  //   };
+  //   pins.forEach(function (item, index) {
+  //     item.addEventListener('click', function () {
+  //       showMapCard(index);
+  //     });
+  //   });
+  // };
+
   var onRemoveMapCard = function () {
     removeMapCard();
     document.removeEventListener('keydown', onRemoveMapCardEsc);
@@ -80,7 +109,7 @@
   // Показывает карточку объявления
   var showMapCard = function () {
     removeMapCard();
-    window.pin.removePinActive();
+    // window.pin.removePinActive();
     mapFiltersContainer.before(mapCardElement);
   };
 
