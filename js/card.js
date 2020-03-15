@@ -18,8 +18,10 @@
   var renderMapCard = function (card) {
     // var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
     // var mapCardElement = mapCardTemplate.cloneNode(true);
-    var popupFeatures = mapCardElement.querySelector('.popup__features');
-    var popupFeatureTemplate = Array.from(popupFeatures.childNodes);
+
+    // var popupFeatures = mapCardElement.querySelector('.popup__features');
+    // var popupFeatureTemplate = Array.from(popupFeatures.childNodes);
+    var cardFeatures = mapCardElement.querySelector('.popup__features');
     var features = card.offer.features;
 
     mapCardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -31,17 +33,27 @@
     mapCardElement.querySelector('.popup__description').textContent = card.offer.description;
     mapCardElement.querySelector('.popup__avatar').src = card.author.avatar;
 
+    // for (var i = 0; i < features.length; i++) {
+    //   popupFeatureTemplate.forEach(function (child) {
+    //     if (child.nodeType === 1) {
+    //       if (child.classList.contains('popup__feature--' + features[i])) {
+    //         child.style.display = 'inline-block';
+    //         child.classList.add('popup__feature--visible');
+    //       } else if (!child.classList.contains('popup__feature--visible')) {
+    //         child.style.display = 'none';
+    //       }
+    //     }
+    //   });
+    // }
+
+    while (cardFeatures.firstChild) {
+      cardFeatures.removeChild(cardFeatures.firstChild);
+    }
     for (var i = 0; i < features.length; i++) {
-      popupFeatureTemplate.forEach(function (child) {
-        if (child.nodeType === 1) {
-          if (child.classList.contains('popup__feature--' + features[i])) {
-            child.style.display = 'inline-block';
-            child.classList.add('popup__feature--visible');
-          } else if (!child.classList.contains('popup__feature--visible')) {
-            child.style.display = 'none';
-          }
-        }
-      });
+      var feature = document.createElement('li');
+      feature.classList.add('.popup__feature');
+      feature.classList.add('.popup__feature--' + features[i]);
+      cardFeatures.appendChild(feature);
     }
 
     var cardPhotos = mapCardElement.querySelector('.popup__photos');
@@ -108,9 +120,26 @@
 
   // Показывает карточку объявления
   var showMapCard = function () {
+  // var showMapCard = function (number) {
+    // var mapPin = document.querySelectorAll('.map__pin');
+    // var mapCards = document.querySelectorAll('.map__card');
+    // mapPin[number].addEventListener('click', function (event) {
+    //   if (event.button === 0 || event.key === 'Enter') {
+    //     removeMapCard();
+    //     mapCards[number - 1].classList.remove('hidden');
+    //     document.addEventListener('keydown', onRemoveMapCardEsc);
+    //     mapCards[number - 1].querySelector('.popup__close').addEventListener('click', onRemoveMapCard);
+    //   }
+    // });
     removeMapCard();
+    // var id = Number(target.dataset.id);
+    // var targetOffer = offerData.find(function (offer) {
+    //   return offer.id === id;
+    // },
     // window.pin.removePinActive();
+
     mapFiltersContainer.before(mapCardElement);
+    // map.insertBefore(renderMapCard(targetOffer), mapFiltersContainer);
   };
 
   // Удаляет карточку объявления

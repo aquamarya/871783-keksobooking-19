@@ -62,6 +62,18 @@
       }
     }
 
+  //   mapPinElement.querySelector('.map__pin').addEventListener('click', function (event) {
+  //     var activeElement = event.currentTarget;
+  //     var mapPinActive = map.querySelector('.map__pin--active');
+  //
+  //     if (mapPinActive) {
+  //       mapPinActive.classList.remove('map__pin--active');
+  //     }
+  //
+  //     activeElement.classList.add('map__pin--active');
+  //     window.card.showMapCard(map, window.card.renderMapCard(item));
+  //   });
+
     return mapPinElement;
   };
 
