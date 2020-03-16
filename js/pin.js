@@ -35,7 +35,7 @@
     function mapPinElementKeydown(event) {
       if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
         var items = Array.from(document.querySelectorAll('.map__pin'));
-        for (let item of items) {
+        for (item in items) {
         // for (item in items) {
           if (!item === mapPinElement) {
             item.classList.remove('map__pin--active');
@@ -48,9 +48,10 @@
 
     mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
     function mapPinElementMousedown(event) {
+      // console.log(111)
       if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
         var items = Array.from(document.querySelectorAll('.map__pin'));
-        for (let item of items) {
+        for (item in items) {
         // for (item in items) {
           if (item !== mapPinElement) {
             item.classList.remove('map__pin--active');
@@ -58,21 +59,21 @@
         }
         window.card.showMapCard(item);
         mapPinElement.classList.add('map__pin--active');
-        console.log(mapPinElement);
+        // console.log(mapPinElement);
       }
     }
 
-  //   mapPinElement.querySelector('.map__pin').addEventListener('click', function (event) {
-  //     var activeElement = event.currentTarget;
-  //     var mapPinActive = map.querySelector('.map__pin--active');
-  //
-  //     if (mapPinActive) {
-  //       mapPinActive.classList.remove('map__pin--active');
-  //     }
-  //
-  //     activeElement.classList.add('map__pin--active');
-  //     window.card.showMapCard(map, window.card.renderMapCard(item));
-  //   });
+    // mapPinElement.querySelector('.map__pin').addEventListener('click', function (event) {
+    //   var activeElement = event.currentTarget;
+    //   var mapPinActive = map.querySelector('.map__pin--active');
+    //
+    //   if (mapPinActive) {
+    //     mapPinActive.classList.remove('map__pin--active');
+    //   }
+    //
+    //   activeElement.classList.add('map__pin--active');
+    //   window.card.showMapCard(map, window.card.renderMapCard(item));
+    // });
 
     return mapPinElement;
   };
@@ -86,7 +87,7 @@
 
   // Отрисовывает массив меток
   var renderMapPins = function (adverts) {
-    console.log(adverts);
+    // console.log(adverts);
     // var mapFiltersContainer = map.querySelector('.map__filters-container');
 
     // for (var i = 0; i < array.length; i++) {
@@ -98,7 +99,7 @@
     if (ads.length > MAX_AMOUNT) {
       ads = ads.slice(0, MAX_AMOUNT);
     }
-    console.log(ads);
+    // console.log(ads);
     var fragment = document.createDocumentFragment();
     ads.forEach(function (advert) {
       if (advert.offer) {
