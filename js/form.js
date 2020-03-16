@@ -1,10 +1,25 @@
 'use strict';
 
 (function () {
+  var PIN_MAIN_PEAK = 20;
+  var HOUSING_PRICES = [
+    0,
+    1000,
+    5000,
+    10000
+  ];
+  var FORM_ELEMENTS = [
+    '.ad-form fieldset',
+    '.map__filters select',
+    '.map__filters fieldset'
+  ];
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = map.querySelector('.map__pin--main');
   var btnReset = adForm.querySelector('.ad-form__reset');
+  var formFilters = document.querySelector('.map__filters');
+  var timeIn = adForm.querySelector('#timein');
+  var timeOut = adForm.querySelector('#timeout');
 
   // Включает\отключает элементы формы
   var setDisableToggle = function (data, toggle) {
@@ -20,34 +35,39 @@
     }
   };
   // Отключает элементы формы
-  setDisableToggle(window.data.FORM_ELEMENTS, 'add');
+  setDisableToggle(FORM_ELEMENTS, 'add');
 
   var activatedForm = function () {
-    setDisableToggle(window.data.FORM_ELEMENTS, 'remove');
+    setDisableToggle(FORM_ELEMENTS, 'remove');
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    window.pin.setCoordinates(window.data.PinMain.WIDTH / 2, window.data.PinMain.HEIGHT + window.data.PIN_MAIN_PEAK);
-    window.api.load(window.pin.renderMapPins, window.api.onLoadError);
+    window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
+    window.api.load(function (result) {
+      window.pin.renderMapPins(result);
+      window.filter.renderAdverts(result);
+    }, window.api.onLoadError);
+    // window.api.load(window.filter.renderAdverts, window.api.onLoadError);
+    formFilters.addEventListener('change', window.filter.onFilterChange);
   };
 
-  adForm.addEventListener('submit', function (evt) {
+  adForm.addEventListener('submit', function (event) {
     window.api.save(new FormData(adForm), window.api.onLoadSuccess, window.api.onLoadError);
-    evt.preventDefault();
+    event.preventDefault();
   });
 
-  btnReset.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  btnReset.addEventListener('click', function (event) {
+    event.preventDefault();
     adForm.reset();
   });
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
+  mapPinMain.addEventListener('mousedown', function (event) {
+    if (event.button === 0) {
       activatedForm();
     }
   });
 
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
+  mapPinMain.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
       activatedForm();
     }
   });
@@ -56,8 +76,8 @@
   var setPrice = function () {
     var typeOfHouse = adForm.querySelector('#type').options.selectedIndex;
     var pricePerNight = document.querySelector('#price');
-    pricePerNight.setAttribute('min', window.data.HOUSING_PRICES[typeOfHouse]);
-    pricePerNight.setAttribute('placeholder', window.data.HOUSING_PRICES[typeOfHouse]);
+    pricePerNight.setAttribute('min', HOUSING_PRICES[typeOfHouse]);
+    pricePerNight.setAttribute('placeholder', HOUSING_PRICES[typeOfHouse]);
   };
 
   setPrice();
@@ -91,8 +111,6 @@
 
   setGuests(adForm.querySelector('#room_number').value);
 
-  var timeIn = adForm.querySelector('#timein');
-  var timeOut = adForm.querySelector('#timeout');
   var timeInValidate = function () {
     timeOut.selectedIndex = timeIn.selectedIndex;
   };
@@ -100,11 +118,11 @@
     timeIn.selectedIndex = timeOut.selectedIndex;
   };
 
-  timeIn.addEventListener('change', function (evt) {
-    timeInValidate(evt);
+  timeIn.addEventListener('change', function (event) {
+    timeInValidate(event);
   });
-  timeOut.addEventListener('change', function (evt) {
-    timeOutValidate(evt);
+  timeOut.addEventListener('change', function (event) {
+    timeOutValidate(event);
   });
 
   window.adForm = {
