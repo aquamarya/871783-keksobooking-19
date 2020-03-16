@@ -45,6 +45,7 @@
       default:
         return true;
     }
+    window.card.removeMapCard();
     window.pin.removePins();
     window.pin.renderMapPins(filteredAdverts);
     return false;
@@ -94,8 +95,8 @@
 
   var filterByFeatures = function (features) {
     return filteredAdverts.filter(function (advert) {
-      return features.every(function (f) {
-        return (advert.offer.features.indexOf(f) > -1);
+      return features.every(function (feature) {
+        return (advert.offer.features.indexOf(feature) > -1);
       });
     });
   };
@@ -105,29 +106,15 @@
     window.pin.renderMapPins(adverts.slice(0, window.pin.MAX_AMOUNT));
   };
 
-  // var getAdverts = function () {
-  //   return adverts;
-  // };
-  //
-  // var filteredAdverts = getAdverts();
-
-  // var getFilteredAdverts = function () {
-  //   console.log(filteredAdverts)
-  //   filteredAdverts
-  //     .filter(filterByHouseType)
-  //     .filter(filterByPrice)
-  //     .filter(filterByRooms)
-  //     .filter(filterByGuests)
-  //     .filter(filterByFeatures);
-  //   console.log(filteredAdverts);
-  // return filteredAdverts;
-  // };
-  //
+  // // Обновляет пины в соответствии с результатами фильтрации
   // var updateAdverts = function () {
   //   window.card.removeMapCard();
   //   window.pin.removePins();
-  //   window.pin.renderMapPins(getFilteredAdverts);
+  //   window.pin.renderMapPins(filteredAdverts);
   // };
+
+
+  formFilters.addEventListener('change', window.util.debounce(onFilterChange));
 
   // formFilters.addEventListener('change', window.util.debounce(getFilteredAdverts));
   // formFilters.addEventListener('change', onFilterChange);

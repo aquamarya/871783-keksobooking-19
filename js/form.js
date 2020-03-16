@@ -60,11 +60,28 @@
     adForm.reset();
   });
 
-  mapPinMain.addEventListener('mousedown', function (event) {
+  // mapPinMain.addEventListener('mousedown', function (event) {
+  //   if (event.button === 0) {
+  //     activatedForm();
+  //   }
+  // });
+
+  mapPinMain.addEventListener('mousedown', act);
+  function act(event) {
     if (event.button === 0) {
+      mapPinMain.removeEventListener('mousedown', act);
       activatedForm();
     }
-  });
+  }
+
+  mapPinMain.addEventListener('mouseup', mouseup);
+  function mouseup(event) {
+    if (event.button === 0) {
+      mapPinMain.removeEventListener('mousedown', mouseup);
+      activatedForm();
+    }
+  }
+
 
   mapPinMain.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {

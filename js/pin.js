@@ -36,7 +36,6 @@
       if (event.key === 'Enter' && !mapPinElement.classList.contains('map__pin--active')) {
         var items = Array.from(document.querySelectorAll('.map__pin'));
         for (item in items) {
-        // for (item in items) {
           if (!item === mapPinElement) {
             item.classList.remove('map__pin--active');
           }
@@ -52,7 +51,6 @@
       if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
         var items = Array.from(document.querySelectorAll('.map__pin'));
         for (item in items) {
-        // for (item in items) {
           if (item !== mapPinElement) {
             item.classList.remove('map__pin--active');
           }
@@ -78,23 +76,9 @@
     return mapPinElement;
   };
 
-  // var removePinActive = function () {
-  //   var pinActive = document.querySelector('.map__pin--active');
-  //   if (pinActive) {
-  //     pinActive.classList.remove('.map__pin--active');
-  //   }
-  // };
-
   // Отрисовывает массив меток
   var renderMapPins = function (adverts) {
     // console.log(adverts);
-    // var mapFiltersContainer = map.querySelector('.map__filters-container');
-
-    // for (var i = 0; i < array.length; i++) {
-    //   fragment.appendChild(renderMapPin(array[i]));
-    //   if (i === 0) {
-    //     map.insertBefore(window.card.renderMapCard(array[0]), mapFiltersContainer);
-    //   }
     var ads = adverts;
     if (ads.length > MAX_AMOUNT) {
       ads = ads.slice(0, MAX_AMOUNT);
@@ -144,8 +128,6 @@
       y: event.clientY
     };
 
-    // var dragged = false;
-
     var onMouseMove = function (moveEvent) {
       var shift = {
         x: startCoords.x - moveEvent.clientX,
@@ -175,6 +157,8 @@
     };
 
     var onMouseUp = function () {
+      // upEvent.preventDefault();
+      // var dragged = true;
       setCoordinates(
           PinMain.HEIGHT / 2,
           PinMain.WIDTH / 2
@@ -189,7 +173,6 @@
   window.pin = {
     setCoordinates: setCoordinates,
     renderMapPins: renderMapPins,
-    // removePinActive: removePinActive,
     MAX_AMOUNT: MAX_AMOUNT,
     PinMain: PinMain,
     removePins: removePins

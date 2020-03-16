@@ -118,29 +118,43 @@
   mapCardClose.addEventListener('click', onRemoveMapCard);
   document.addEventListener('keydown', onRemoveMapCardEsc);
 
+  // function showMapCard(advert) {
+  //   var mapCard = map.querySelector('.map__card');
+  //   if (mapCard) {
+  //     mapCard.remove();
+  //   }
+  //   renderMapCard(advert);
+  //   mapFiltersContainer.before(renderMapCard(mapCardElement));
+  // }
+
   // Показывает карточку объявления
   var showMapCard = function () {
-  // var showMapCard = function (number) {
-    // var mapPin = document.querySelectorAll('.map__pin');
-    // var mapCards = document.querySelectorAll('.map__card');
-    // mapPin[number].addEventListener('click', function (event) {
-    //   if (event.button === 0 || event.key === 'Enter') {
-    //     removeMapCard();
-    //     mapCards[number - 1].classList.remove('hidden');
-    //     document.addEventListener('keydown', onRemoveMapCardEsc);
-    //     mapCards[number - 1].querySelector('.popup__close').addEventListener('click', onRemoveMapCard);
-    //   }
-    // });
     removeMapCard();
-    // var id = Number(target.dataset.id);
-    // var targetOffer = offerData.find(function (offer) {
-    //   return offer.id === id;
-    // },
-    // window.pin.removePinActive();
 
-    mapFiltersContainer.before(mapCardElement);
-    // map.insertBefore(renderMapCard(targetOffer), mapFiltersContainer);
+    mapFiltersContainer.before(renderMapCard(mapCardElement));
   };
+
+  // var showMapCard = function (number) {
+  // var mapPin = document.querySelectorAll('.map__pin');
+  // var mapCards = document.querySelectorAll('.map__card');
+  // mapPin[number].addEventListener('click', function (event) {
+  //   if (event.button === 0 || event.key === 'Enter') {
+  //     removeMapCard();
+  //     mapCards[number - 1].classList.remove('hidden');
+  //     document.addEventListener('keydown', onRemoveMapCardEsc);
+  //     mapCards[number - 1].querySelector('.popup__close').addEventListener('click', onRemoveMapCard);
+  //   }
+  // });
+  // removeMapCard();
+  // var id = Number(target.dataset.id);
+  // var targetOffer = offerData.find(function (offer) {
+  //   return offer.id === id;
+  // },
+  // window.pin.removePinActive();
+
+  // mapFiltersContainer.before(mapCardElement);
+  // map.insertBefore(renderMapCard(targetOffer), mapFiltersContainer);
+  // };
 
   // Удаляет карточку объявления
   var removeMapCard = function () {
