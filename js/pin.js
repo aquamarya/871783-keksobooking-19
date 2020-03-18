@@ -22,6 +22,7 @@
   var allPins = document.getElementsByClassName('map__pin');
   var adForm = document.querySelector('.ad-form');
   var MAX_AMOUNT = 5;
+  var ads = [];
 
   // Отрисовывает метку на карте
   var renderMapPin = function (item) {
@@ -47,53 +48,37 @@
 
     mapPinElement.addEventListener('mousedown', mapPinElementMousedown);
     function mapPinElementMousedown(event) {
-      // console.log(111)
       if (event.button === 0 && !mapPinElement.classList.contains('map__pin--active')) {
         var items = Array.from(document.querySelectorAll('.map__pin'));
-        for (item in items) {
-          if (item !== mapPinElement) {
-            item.classList.remove('map__pin--active');
+        items.forEach(function (i, index) {
+          if (i !== mapPinElement) {
+            i.classList.remove('map__pin--active');
+          } else {
+            window.card.showMapCard(index, ads);
           }
-        }
-        window.card.showMapCard(item);
+        });
         mapPinElement.classList.add('map__pin--active');
-        // console.log(mapPinElement);
       }
     }
-
-    // mapPinElement.querySelector('.map__pin').addEventListener('click', function (event) {
-    //   var activeElement = event.currentTarget;
-    //   var mapPinActive = map.querySelector('.map__pin--active');
-    //
-    //   if (mapPinActive) {
-    //     mapPinActive.classList.remove('map__pin--active');
-    //   }
-    //
-    //   activeElement.classList.add('map__pin--active');
-    //   window.card.showMapCard(map, window.card.renderMapCard(item));
-    // });
 
     return mapPinElement;
   };
 
   // Отрисовывает массив меток
   var renderMapPins = function (adverts) {
-    // console.log(adverts);
-    var ads = adverts;
+    ads = adverts;
     if (ads.length > MAX_AMOUNT) {
       ads = ads.slice(0, MAX_AMOUNT);
     }
-    // console.log(ads);
+
     var fragment = document.createDocumentFragment();
+    removePins();
     ads.forEach(function (advert) {
       if (advert.offer) {
         fragment.appendChild(renderMapPin(advert));
       }
     });
     mapPins.appendChild(fragment);
-
-
-    // }
   };
 
   // Удаляет старые метки
@@ -104,8 +89,6 @@
       }
     });
   }
-
-  // renderMapPins(MAX_AMOUNT);
 
   // Устанавливает координаты метки в поля ввода адреса
   var setCoordinates = function (xCorrection, yCorrection) {
@@ -157,12 +140,11 @@
     };
 
     var onMouseUp = function () {
-      // upEvent.preventDefault();
-      // var dragged = true;
       setCoordinates(
           PinMain.HEIGHT / 2,
           PinMain.WIDTH / 2
       );
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };

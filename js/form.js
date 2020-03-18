@@ -34,10 +34,21 @@
       }
     }
   };
-  // Отключает элементы формы
-  setDisableToggle(FORM_ELEMENTS, 'add');
 
-  var activatedForm = function () {
+  var onActivateForm = function (event) {
+    if (event.button === 0) {
+      activateForm();
+    }
+  };
+
+  var onActivateFormEnt = function (event) {
+    if (event.key === 'Enter') {
+      activateForm();
+    }
+  };
+
+  // Активирует форму
+  var activateForm = function () {
     setDisableToggle(FORM_ELEMENTS, 'remove');
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
@@ -46,47 +57,41 @@
       window.pin.renderMapPins(result);
       window.filter.renderAdverts(result);
     }, window.api.onLoadError);
-    // window.api.load(window.filter.renderAdverts, window.api.onLoadError);
     formFilters.addEventListener('change', window.filter.onFilterChange);
+    mapPinMain.removeEventListener('mousedown', onActivateForm);
+    mapPinMain.removeEventListener('keydown', onActivateFormEnt);
   };
 
+  // Деактивирует форму
+  var deactivateForm = function () {
+    adForm.reset();
+    setDisableToggle(FORM_ELEMENTS, 'add');
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    window.pin.removePins();
+    window.card.removeMapCard();
+    window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
+    mapPinMain.addEventListener('mousedown', onActivateForm);
+    mapPinMain.addEventListener('keydown', onActivateFormEnt);
+  };
+
+  deactivateForm();
+
   adForm.addEventListener('submit', function (event) {
-    window.api.save(new FormData(adForm), window.api.onLoadSuccess, window.api.onLoadError);
+    window.api.save(new FormData(adForm), function (response) {
+      if (response) {
+        window.api.onLoadSuccess();
+        deactivateForm(true);
+      } else {
+        window.api.onLoadError();
+      }
+    });
     event.preventDefault();
   });
 
   btnReset.addEventListener('click', function (event) {
     event.preventDefault();
     adForm.reset();
-  });
-
-  // mapPinMain.addEventListener('mousedown', function (event) {
-  //   if (event.button === 0) {
-  //     activatedForm();
-  //   }
-  // });
-
-  mapPinMain.addEventListener('mousedown', act);
-  function act(event) {
-    if (event.button === 0) {
-      mapPinMain.removeEventListener('mousedown', act);
-      activatedForm();
-    }
-  }
-
-  mapPinMain.addEventListener('mouseup', mouseup);
-  function mouseup(event) {
-    if (event.button === 0) {
-      mapPinMain.removeEventListener('mousedown', mouseup);
-      activatedForm();
-    }
-  }
-
-
-  mapPinMain.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-      activatedForm();
-    }
   });
 
   // Устанавливат минимальное значение для поля цена
@@ -106,7 +111,7 @@
   // Контролирует соответствие количества гостей с количеством комнат
   var setGuests = function (value) {
     var capacity = adForm.querySelectorAll('#capacity option');
-    // console.log(rooms, capacity);
+
     for (var i = 0; i < capacity.length; i++) {
       var currentOption = parseInt(capacity[i].value, 10);
       var rooms = value === '100' ? 0 : parseInt(value, 10);
@@ -121,7 +126,6 @@
     }
   };
 
-  // var roomNumber = form.querySelector('#room_number');
   adForm.querySelector('#room_number').addEventListener('change', function () {
     setGuests(adForm.querySelector('#room_number').value);
   });
@@ -144,7 +148,7 @@
 
   window.adForm = {
     setDisableToggle: setDisableToggle,
-    activatedForm: activatedForm,
+    activateForm: activateForm,
     setPrice: setPrice,
     setGuests: setGuests,
     timeIn: timeIn,
