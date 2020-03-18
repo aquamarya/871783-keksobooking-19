@@ -62,6 +62,12 @@
     mapPinMain.removeEventListener('keydown', onActivateFormEnt);
   };
 
+  // Начальное местоположение главной метки
+  var startMapPinMain = function () {
+    mapPinMain.style.top = (window.pin.PinMain.Y) + 'px';
+    mapPinMain.style.left = (window.pin.PinMain.X) + 'px';
+  };
+
   // Деактивирует форму
   var deactivateForm = function () {
     adForm.reset();
@@ -70,7 +76,7 @@
     adForm.classList.add('ad-form--disabled');
     window.pin.removePins();
     window.card.removeMapCard();
-    window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
+    startMapPinMain();
     mapPinMain.addEventListener('mousedown', onActivateForm);
     mapPinMain.addEventListener('keydown', onActivateFormEnt);
   };
