@@ -6,7 +6,6 @@
   var housingPrice = formFilters.querySelector('#housing-price');
   var housingRooms = formFilters.querySelector('#housing-rooms');
   var housingGuests = formFilters.querySelector('#housing-guests');
-  // var housingFeatures = formFilters.querySelector('#housing-features');
 
   // Значение фильтра по умолчанию
   var defaultFilter = 'any';
@@ -94,8 +93,8 @@
 
   var filterByFeatures = function (features) {
     return filteredAdverts.filter(function (advert) {
-      return features.every(function (f) {
-        return (advert.offer.features.indexOf(f) > -1);
+      return features.every(function (feature) {
+        return (advert.offer.features.indexOf(feature) > -1);
       });
     });
   };
@@ -105,36 +104,11 @@
     window.pin.renderMapPins(adverts.slice(0, window.pin.MAX_AMOUNT));
   };
 
-  // var getAdverts = function () {
-  //   return adverts;
-  // };
-  //
-  // var filteredAdverts = getAdverts();
-
-  // var getFilteredAdverts = function () {
-  //   console.log(filteredAdverts)
-  //   filteredAdverts
-  //     .filter(filterByHouseType)
-  //     .filter(filterByPrice)
-  //     .filter(filterByRooms)
-  //     .filter(filterByGuests)
-  //     .filter(filterByFeatures);
-  //   console.log(filteredAdverts);
-  // return filteredAdverts;
-  // };
-  //
-  // var updateAdverts = function () {
-  //   window.card.removeMapCard();
-  //   window.pin.removePins();
-  //   window.pin.renderMapPins(getFilteredAdverts);
-  // };
-
-  // formFilters.addEventListener('change', window.util.debounce(getFilteredAdverts));
-  // formFilters.addEventListener('change', onFilterChange);
-  // formFilters.removeEventListener('change', onFilterChange);
+  formFilters.addEventListener('change', window.util.debounce(onFilterChange));
 
   window.filter = {
     onFilterChange: onFilterChange,
     renderAdverts: renderAdverts
   };
+
 })();
