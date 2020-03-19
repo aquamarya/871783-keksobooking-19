@@ -13,12 +13,6 @@
     '.map__filters select',
     '.map__filters fieldset'
   ];
-  // var roomCapacity = {
-  //   1: [1],
-  //   2: [1, 2],
-  //   3: [1, 2, 3],
-  //   100: [0]
-  // };
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = map.querySelector('.map__pin--main');
