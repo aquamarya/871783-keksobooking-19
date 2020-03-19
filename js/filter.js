@@ -27,7 +27,9 @@
       features: Array.from(document.getElementsByName('features')).filter(function (feature) {return  feature.checked}).map(function (feature) {return feature.value})
     };
 
-    for( var [key, value] of Object.entries(filters)) {
+    // forEach([key, value] in Object.entries(filters)) {
+    // for (Object.entries(filters).forEach([key, value])) {
+    for (var [key, value] of Object.entries(filters)) {
       switch (key) {
         case 'type':
           filteredAdverts = (value !== 'any') ? filterByHouseType(value) : filteredAdverts;
@@ -51,7 +53,8 @@
     }
 
     window.pin.removePins();
-    window.pin.renderMapPins(filteredAdverts);
+    // window.pin.renderMapPins(filteredAdverts);
+    window.util.debounce(window.pin.renderMapPins(filteredAdverts));
     return false;
   };
 
@@ -121,7 +124,7 @@
     return (sortedPins.length > max) ? sortedPins.slice(0, max) : sortedPins;
   };
 
-  formFilters.addEventListener('change', window.util.debounce(onFilterChange));
+  // formFilters.addEventListener('change', window.util.debounce(onFilterChange));
 
   window.filter = {
     onFilterChange: onFilterChange,

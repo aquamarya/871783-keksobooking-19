@@ -2,7 +2,7 @@
 
 (function () {
   var MAX_AMOUNT = 5;
-  var MIN_X = 0;
+  var MIN_X = -1;
   var MAX_X = 1200;
   var MIN_Y = 130;
   var MAX_Y = 630;
@@ -95,10 +95,10 @@
   }
 
   // Устанавливает координаты метки в поля ввода адреса
-  var setCoordinates = function () {
+  var setCoordinates = function (xCorrection) {
     var x = parseInt(mapPinMain.style.left, 10);
     var y = parseInt(mapPinMain.style.top, 10);
-    // x += xCorrection;
+    x += xCorrection;
     // y += yCorrection;
     adForm.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
   };
@@ -157,7 +157,6 @@
           parseInt(mapPinMain.style.left, 10) - PinMain.HEIGHT / 2,
           parseInt(mapPinMain.style.top, 10) - PinMain.WIDTH / 2,
           MAX_AMOUNT);
-      renderMapPins(ads);
       renderMapPins(ads);
     };
 

@@ -17,17 +17,15 @@
   // Устраняет дребезг
   var DEBOUNCE_INTERVAL = 700; // ms
 
+  var lastTimeout;
+  console.log(debounce);
   var debounce = function (cb) {
-    var lastTimeout = null;
     console.log(cb);
     return function () {
-      var parameters = arguments;
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
-      lastTimeout = window.setTimeout(function () {
-        cb.apply(null, parameters);
-      }, DEBOUNCE_INTERVAL);
+      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
     };
   };
 
