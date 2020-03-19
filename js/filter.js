@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+
+  var MIN_PRICE = 10000;
+  var MAX_PRICE = 50000;
+
   var formFilters = document.querySelector('.map__filters');
   var housingType = formFilters.querySelector('#housing-type');
   var housingPrice = formFilters.querySelector('#housing-price');
@@ -12,38 +16,40 @@
   var adverts = [];
   var filteredAdverts = [];
 
-  var MIN_PRICE = 10000;
-  var MAX_PRICE = 50000;
-
   var onFilterChange = function (event) {
     filteredAdverts = adverts;
-    switch (true) {
-      case event.target.id === housingType.id:
-        filteredAdverts = filterByHouseType(event.target.value);
-        break;
-      case event.target.id === housingPrice.id:
-        filteredAdverts = filterByPrice(event.target.value);
-        break;
-      case event.target.id === housingRooms.id:
-        filteredAdverts = filterByRooms(event.target.value);
-        break;
-      case event.target.id === housingGuests.id:
-        filteredAdverts = filterByGuests(event.target.value);
-        break;
-      case event.target.id === ('filter-' + event.target.value):
-        var checked = [];
-        var features = Array.from(document.getElementsByName('features'));
-        features.forEach(function (feature) {
-          if (feature.checked) {
-            checked.push(feature.value);
-          }
-        });
-        filteredAdverts = filterByFeatures(checked);
-        break;
+    window.card.removeMapCard();
+    var filters = {
+      type: housingType.value,
+      price: housingPrice.value,
+      rooms: housingRooms.value,
+      guests: housingGuests.value,
+      features: Array.from(document.getElementsByName('features')).filter(function (feature) {return  feature.checked}).map(function (feature) {return feature.value})
+    };
 
-      default:
-        return true;
+    for( var [key, value] of Object.entries(filters)) {
+      switch (key) {
+        case 'type':
+          filteredAdverts = (value !== 'any') ? filterByHouseType(value) : filteredAdverts;
+          break;
+        case 'price':
+          filteredAdverts = (value !== 'any') ? filterByPrice(value) : filteredAdverts;
+          break;
+        case 'rooms':
+          filteredAdverts = (value !== 'any') ? filterByRooms(value) : filteredAdverts;
+          break;
+        case 'guests':
+          filteredAdverts = (value !== 'any') ? filterByGuests(value) : filteredAdverts;
+          break;
+        case 'features':
+          filteredAdverts = (value.length > 0) ? filterByFeatures(value) : filteredAdverts;
+          break;
+
+        default:
+          return true;
+      }
     }
+
     window.pin.removePins();
     window.pin.renderMapPins(filteredAdverts);
     return false;
@@ -58,15 +64,15 @@
     return false;
   };
 
-  var filterByPrice = function () {
+  var filterByPrice = function (value) {
     return filteredAdverts.filter(function (advert) {
-      switch (true) {
-        case advert.offer.price < MIN_PRICE:
-          return advert;
+      switch (value) {
+        case 'low':
+          return advert.offer.price < MIN_PRICE;
         case 'middle':
-          return (advert.offer.price <= MAX_PRICE && advert.offer.price >= MIN_PRICE);
+          return advert.offer.price <= MAX_PRICE && advert.offer.price >= MIN_PRICE;
         case 'high':
-          return (advert.offer.price >= MAX_PRICE);
+          return advert.offer.price >= MAX_PRICE;
         default:
           return false;
       }
@@ -104,11 +110,23 @@
     window.pin.renderMapPins(adverts.slice(0, window.pin.MAX_AMOUNT));
   };
 
+  // Сортирует пины по расстоянию от главного Пина
+  var sortByDistance = function (x, y, max) {
+    var sortedPins = adverts.sort(function (first, second) {
+      var firstSortedPin = Math.round(Math.sqrt(Math.pow(first.location.x - x, 2) + Math.pow(first.location.y - y, 2)));
+      var secondSortedPin = Math.round(Math.sqrt(Math.pow(second.location.x - x, 2) + Math.pow(second.location.y - y, 2)));
+
+      return firstSortedPin - secondSortedPin;
+    });
+    return (sortedPins.length > max) ? sortedPins.slice(0, max) : sortedPins;
+  };
+
   formFilters.addEventListener('change', window.util.debounce(onFilterChange));
 
   window.filter = {
     onFilterChange: onFilterChange,
-    renderAdverts: renderAdverts
+    renderAdverts: renderAdverts,
+    sortByDistance: sortByDistance
   };
 
 })();

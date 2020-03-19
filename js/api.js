@@ -35,6 +35,7 @@
   };
 
   var save = function (formData, onSuccess, onError) {
+    // console.log(formData);
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -82,6 +83,7 @@
   };
 
   var onLoadSuccess = function () {
+    // window.form.deactivateForm();
     var onRemoveSuccess = function () {
       success.removeEventListener('click', onRemoveSuccess);
       success.remove();

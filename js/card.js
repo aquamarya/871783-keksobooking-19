@@ -2,9 +2,6 @@
 
 (function () {
 
-  var map = document.querySelector('.map');
-  var mapFiltersContainer = map.querySelector('.map__filters-container');
-
   var TYPE_OF_HOUSE_CARD = {
     'palace': 'Дворец',
     'flat': 'Квартира',
@@ -12,6 +9,8 @@
     'bungalo': 'Бунгало'
   };
 
+  var map = document.querySelector('.map');
+  var mapFiltersContainer = map.querySelector('.map__filters-container');
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardElement = mapCardTemplate.cloneNode(true);
 
@@ -80,7 +79,7 @@
   // Показывает карточку объявления
   var showMapCard = function (index, all) {
     removeMapCard();
-
+    document.addEventListener('keydown', onRemoveMapCardEsc);
     mapFiltersContainer.before(renderMapCard(all[index - 1]));
   };
 

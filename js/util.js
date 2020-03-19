@@ -19,7 +19,7 @@
 
   var debounce = function (cb) {
     var lastTimeout = null;
-
+    console.log(cb);
     return function () {
       var parameters = arguments;
       if (lastTimeout) {
