@@ -91,16 +91,17 @@
       } else {
         window.api.onLoadError();
       }
-    });
+    }, window.api.onLoadError);
     event.preventDefault();
   });
 
   btnReset.addEventListener('click', function (event) {
     event.preventDefault();
+    deactivateForm();
     adForm.reset();
   });
 
-  // Устанавливат минимальное значение для поля цена
+  // Устанавливат минимальное значение для поля "цена"
   var setPrice = function () {
     var typeOfHouse = adForm.querySelector('#type').options.selectedIndex;
     var pricePerNight = document.querySelector('#price');
@@ -115,32 +116,33 @@
   });
 
   // Контролирует соответствие количества гостей с количеством комнат
-  var setGuests = function (value) {
+  var setRoomsGuests = function (value) {
     var capacity = adForm.querySelectorAll('#capacity option');
-
+    var rooms = value === '100' ? 0 : parseInt(value, 10);
     for (var i = 0; i < capacity.length; i++) {
       var currentOption = parseInt(capacity[i].value, 10);
-      var rooms = value === '100' ? 0 : parseInt(value, 10);
       capacity[i].removeAttribute('disabled');
-      capacity[i].removeAttribute('selected');
       if (currentOption > rooms || currentOption === 0) {
         capacity[i].setAttribute('disabled', 'disabled');
-      } if (currentOption === rooms) {
+        if (parseFloat(adForm.querySelectorAll('#capacity')[0].value) > rooms) {
+          adForm.querySelectorAll('#capacity')[0].value = rooms;
+        }
+      } else {
         capacity[i].removeAttribute('disabled');
-        capacity[i].setAttribute('selected', 'selected');
       }
     }
   };
 
   adForm.querySelector('#room_number').addEventListener('change', function () {
-    setGuests(adForm.querySelector('#room_number').value);
+    setRoomsGuests(adForm.querySelector('#room_number').value);
   });
 
-  setGuests(adForm.querySelector('#room_number').value);
+  setRoomsGuests(adForm.querySelector('#room_number').value);
 
   var timeInValidate = function () {
     timeOut.selectedIndex = timeIn.selectedIndex;
   };
+
   var timeOutValidate = function () {
     timeIn.selectedIndex = timeOut.selectedIndex;
   };
@@ -148,6 +150,7 @@
   timeIn.addEventListener('change', function (event) {
     timeInValidate(event);
   });
+
   timeOut.addEventListener('change', function (event) {
     timeOutValidate(event);
   });
@@ -155,8 +158,6 @@
   window.adForm = {
     setDisableToggle: setDisableToggle,
     activateForm: activateForm,
-    setPrice: setPrice,
-    setGuests: setGuests,
     timeIn: timeIn,
     timeOut: timeOut,
     timeInValidate: timeInValidate,
