@@ -1,6 +1,22 @@
 'use strict';
 
 (function () {
+  // Устраняет дребезг
+  var DEBOUNCE_INTERVAL = 500; // ms
+
+  var debounce = function (cb) {
+    var lastTimeout = null;
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   // Создает случайный элемент массива
   var getRandomItem = function (array) {
     var itemIndex = Math.floor(Math.random() * array.length);
@@ -12,21 +28,6 @@
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  // Устраняет дребезг
-  var DEBOUNCE_INTERVAL = 700; // ms
-
-  var lastTimeout;
-  console.log(debounce);
-  var debounce = function (cb) {
-    console.log(cb);
-    return function () {
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
-    };
   };
 
   window.util = {

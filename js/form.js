@@ -67,34 +67,6 @@
     mapPinMain.style.top = (window.pin.PinMain.Y) + 'px';
     mapPinMain.style.left = (window.pin.PinMain.X) + 'px';
   };
-  //
-  // mapPinMain.addEventListener('mousemove', function (event) {
-  //   if (event.button === 0) {
-  //     event.preventDefault();
-  //     activateForm();
-  //   }
-  // });
-  // mapPinMain.addEventListener('mousemove', act);
-  // function act(event) {
-  //   if (event.button === 0) {
-  //     mapPinMain.removeEventListener('mousemove', act);
-  //     activateForm();
-  //   }
-  // }
-
-  // mapPinMain.addEventListener('mousedown', function (event) {
-  //   if (event.button === 0) {
-  //     activateForm();
-  //   }
-  // });
-
-  // mapPinMain.addEventListener('mousedown', act);
-  // function act(event) {
-  //   if (event.button === 0) {
-  //     mapPinMain.removeEventListener('mousedown', act);
-  //     activateForm();
-  //   }
-  // }
 
   // Деактивирует форму
   var deactivateForm = function () {

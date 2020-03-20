@@ -16,7 +16,7 @@
   var adverts = [];
   var filteredAdverts = [];
 
-  var onFilterChange = function (event) {
+  var onFilterChange = function () {
     filteredAdverts = adverts;
     window.card.removeMapCard();
     var filters = {
@@ -24,12 +24,16 @@
       price: housingPrice.value,
       rooms: housingRooms.value,
       guests: housingGuests.value,
-      features: Array.from(document.getElementsByName('features')).filter(function (feature) {return  feature.checked}).map(function (feature) {return feature.value})
+      features: Array.from(document.getElementsByName('features')).filter(function (feature) {
+        return feature.checked;
+      }).map(function (feature) {
+        return feature.value;
+      })
     };
 
-    // forEach([key, value] in Object.entries(filters)) {
-    // for (Object.entries(filters).forEach([key, value])) {
-    for (var [key, value] of Object.entries(filters)) {
+    var keys = Object.keys(filters);
+    keys.forEach(function (key) {
+      var value = filters[key];
       switch (key) {
         case 'type':
           filteredAdverts = (value !== 'any') ? filterByHouseType(value) : filteredAdverts;
@@ -50,11 +54,12 @@
         default:
           return true;
       }
-    }
+      return true;
+    });
 
     window.pin.removePins();
-    // window.pin.renderMapPins(filteredAdverts);
-    window.util.debounce(window.pin.renderMapPins(filteredAdverts));
+    window.pin.renderMapPins(filteredAdverts);
+
     return false;
   };
 
@@ -124,7 +129,15 @@
     return (sortedPins.length > max) ? sortedPins.slice(0, max) : sortedPins;
   };
 
-  // formFilters.addEventListener('change', window.util.debounce(onFilterChange));
+  var mapFilters = document.querySelector('.map__filters');
+  var updatePins = function () {
+    window.card.removeMapCard();
+    window.pin.removePins();
+    window.pin.renderMapPins(onFilterChange());
+  };
+
+  var debounceRenderPins = window.util.debounce(updatePins);
+  mapFilters.addEventListener('change', debounceRenderPins);
 
   window.filter = {
     onFilterChange: onFilterChange,

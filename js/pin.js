@@ -108,6 +108,13 @@
       PinMain.HEIGHT / 2
   );
 
+  mapPinMain.addEventListener('mousemove', function (event) {
+    if (event.button === 0) {
+      event.preventDefault();
+      setCoordinates(PinMain.WIDTH / 2);
+    }
+  });
+
   mapPinMain.addEventListener('mousedown', function (event) {
     event.preventDefault();
     var startCoords = {
@@ -157,7 +164,7 @@
           parseInt(mapPinMain.style.left, 10) - PinMain.HEIGHT / 2,
           parseInt(mapPinMain.style.top, 10) - PinMain.WIDTH / 2,
           MAX_AMOUNT);
-      renderMapPins(ads);
+      window.util.debounce(renderMapPins(ads));
     };
 
     document.addEventListener('mousemove', onMouseMove);
