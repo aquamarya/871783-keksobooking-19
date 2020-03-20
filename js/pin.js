@@ -69,7 +69,7 @@
   };
 
   // Отрисовывает массив меток
-  var renderMapPins = function (adverts) {
+  var renderMapPins = window.util.debounce(function (adverts) {
     ads = adverts;
     if (ads.length > MAX_AMOUNT) {
       ads = ads.slice(0, MAX_AMOUNT);
@@ -83,7 +83,7 @@
       }
     });
     mapPins.appendChild(fragment);
-  };
+  });
 
   // Удаляет старые метки
   function removePins() {
@@ -99,7 +99,6 @@
     var x = parseInt(mapPinMain.style.left, 10);
     var y = parseInt(mapPinMain.style.top, 10);
     x += xCorrection;
-    // y += yCorrection;
     adForm.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
   };
 

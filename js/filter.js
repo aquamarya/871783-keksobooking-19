@@ -56,8 +56,7 @@
       }
       return true;
     });
-
-    window.pin.removePins();
+    window.util.debounce(window.pin.removePins());
     window.pin.renderMapPins(filteredAdverts);
 
     return false;
@@ -128,16 +127,6 @@
     });
     return (sortedPins.length > max) ? sortedPins.slice(0, max) : sortedPins;
   };
-
-  var mapFilters = document.querySelector('.map__filters');
-  var updatePins = function () {
-    window.card.removeMapCard();
-    window.pin.removePins();
-    window.pin.renderMapPins(onFilterChange());
-  };
-
-  var debounceRenderPins = window.util.debounce(updatePins);
-  mapFilters.addEventListener('change', debounceRenderPins);
 
   window.filter = {
     onFilterChange: onFilterChange,
