@@ -101,7 +101,7 @@
     adForm.reset();
   });
 
-  // Устанавливат минимальное значение для поля цена
+  // Устанавливат минимальное значение для поля "цена"
   var setPrice = function () {
     var typeOfHouse = adForm.querySelector('#type').options.selectedIndex;
     var pricePerNight = document.querySelector('#price');
@@ -142,6 +142,7 @@
   var timeInValidate = function () {
     timeOut.selectedIndex = timeIn.selectedIndex;
   };
+
   var timeOutValidate = function () {
     timeIn.selectedIndex = timeOut.selectedIndex;
   };
@@ -149,6 +150,7 @@
   timeIn.addEventListener('change', function (event) {
     timeInValidate(event);
   });
+
   timeOut.addEventListener('change', function (event) {
     timeOutValidate(event);
   });

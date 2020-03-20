@@ -117,7 +117,7 @@
     window.pin.renderMapPins(adverts.slice(0, window.pin.MAX_AMOUNT));
   };
 
-  // Сортирует пины по расстоянию от главного Пина
+  // Сортирует пины по расстоянию от главной метки
   var sortByDistance = function (x, y, max) {
     var sortedPins = adverts.sort(function (first, second) {
       var firstSortedPin = Math.round(Math.sqrt(Math.pow(first.location.x - x, 2) + Math.pow(first.location.y - y, 2)));
