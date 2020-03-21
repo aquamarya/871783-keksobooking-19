@@ -96,5 +96,4 @@
     showMapCard: showMapCard,
     renderMapCard: renderMapCard
   };
-
 })();

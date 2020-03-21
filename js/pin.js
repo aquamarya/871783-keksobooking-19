@@ -146,7 +146,6 @@
       } else if (parseInt(mapPinMain.style.top, 10) < MIN_Y) {
         mapPinMain.style.top = MIN_Y + 'px';
       }
-
     };
 
     var onMouseUp = function () {
@@ -169,7 +168,6 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
 
   window.pin = {
     setCoordinates: setCoordinates,

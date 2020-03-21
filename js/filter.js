@@ -135,5 +135,4 @@
     renderAdverts: renderAdverts,
     sortByDistance: sortByDistance
   };
-
 })();
