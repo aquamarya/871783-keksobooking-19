@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  // Устраняет дребезг
+  // Устраняет частую перерисовку пинов
   var DEBOUNCE_INTERVAL = 500; // ms
 
   var debounce = function (cb) {

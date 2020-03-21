@@ -57,7 +57,7 @@
       window.pin.renderMapPins(result);
       window.filter.renderAdverts(result);
     }, window.api.onLoadError);
-    formFilters.addEventListener('change', window.filter.onFilterChange);
+    formFilters.addEventListener('change', window.util.debounce(window.filter.onFilterChange));
     mapPinMain.removeEventListener('mousedown', onActivateForm);
     mapPinMain.removeEventListener('keydown', onActivateFormEnt);
   };

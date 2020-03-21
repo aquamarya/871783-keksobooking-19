@@ -69,7 +69,7 @@
   };
 
   // Отрисовывает массив меток
-  var renderMapPins = window.util.debounce(function (adverts) {
+  var renderMapPins = function (adverts) {
     ads = adverts;
     if (ads.length > MAX_AMOUNT) {
       ads = ads.slice(0, MAX_AMOUNT);
@@ -83,7 +83,7 @@
       }
     });
     mapPins.appendChild(fragment);
-  });
+  };
 
   // Удаляет старые метки
   function removePins() {
@@ -146,7 +146,6 @@
       } else if (parseInt(mapPinMain.style.top, 10) < MIN_Y) {
         mapPinMain.style.top = MIN_Y + 'px';
       }
-
     };
 
     var onMouseUp = function () {
@@ -170,9 +169,9 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-
   window.pin = {
     setCoordinates: setCoordinates,
+    renderMapPin: renderMapPin,
     renderMapPins: renderMapPins,
     MAX_AMOUNT: MAX_AMOUNT,
     PinMain: PinMain,
