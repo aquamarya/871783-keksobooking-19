@@ -18,7 +18,7 @@
 
   var onFilterChange = function () {
     filteredAdverts = adverts;
-    window.card.removeMapCard();
+
     var filters = {
       type: housingType.value,
       price: housingPrice.value,
@@ -56,7 +56,9 @@
       }
       return true;
     });
-    window.util.debounce(window.pin.removePins());
+
+    window.card.removeMapCard();
+    window.pin.removePins();
     window.pin.renderMapPins(filteredAdverts);
 
     return false;

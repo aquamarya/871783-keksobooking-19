@@ -69,7 +69,7 @@
   };
 
   // Отрисовывает массив меток
-  var renderMapPins = window.util.debounce(function (adverts) {
+  var renderMapPins = function (adverts) {
     ads = adverts;
     if (ads.length > MAX_AMOUNT) {
       ads = ads.slice(0, MAX_AMOUNT);
@@ -83,7 +83,7 @@
       }
     });
     mapPins.appendChild(fragment);
-  });
+  };
 
   // Удаляет старые метки
   function removePins() {
@@ -173,6 +173,7 @@
 
   window.pin = {
     setCoordinates: setCoordinates,
+    renderMapPin: renderMapPin,
     renderMapPins: renderMapPins,
     MAX_AMOUNT: MAX_AMOUNT,
     PinMain: PinMain,
