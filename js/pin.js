@@ -2,22 +2,23 @@
 
 (function () {
   var MAX_AMOUNT = 5;
-  var MIN_X = -1;
+  var MIN_X = 0;
   var MAX_X = 1200;
   var MIN_Y = 130;
   var MAX_Y = 630;
   var Pin = {
-    width: 50,
-    height: 70
+    WIDTH: 50,
+    HEIGHT: 70,
   };
   var PinMain = {
     X: 570,
     Y: 375,
-    HEIGHT: 65,
-    WIDTH: 65
+    HEIGHT: 49,
+    WIDTH: 65,
+    PEAK: 20
   };
-  var offsetX = Pin.width / 2;
-  var offsetY = Pin.height / 2;
+  var offsetX = Pin.WIDTH / 2;
+  var offsetY = Pin.HEIGHT;
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapPins = document.querySelector('.map__pins');
@@ -95,10 +96,12 @@
   }
 
   // Устанавливает координаты метки в поля ввода адреса
-  var setCoordinates = function (xCorrection) {
+  var setCoordinates = function (xCorrection, yCorrection) {
     var x = parseInt(mapPinMain.style.left, 10);
     var y = parseInt(mapPinMain.style.top, 10);
     x += xCorrection;
+    y += yCorrection;
+
     adForm.querySelector('#address').value = Math.round(x) + ', ' + Math.round(y);
   };
 
@@ -110,7 +113,7 @@
   mapPinMain.addEventListener('mousemove', function (event) {
     if (event.button === 0) {
       event.preventDefault();
-      setCoordinates(PinMain.WIDTH / 2);
+      setCoordinates(PinMain.WIDTH / 2, PinMain.HEIGHT + PinMain.PEAK);
     }
   });
 
@@ -140,30 +143,30 @@
       } else if (parseInt(mapPinMain.style.left, 10) + PinMain.WIDTH / 2 <= MIN_X) {
         mapPinMain.style.left = (MIN_X - PinMain.WIDTH / 2) + 'px';
       }
-
-      if (parseInt(mapPinMain.style.top, 10) > MAX_Y) {
-        mapPinMain.style.top = MAX_Y + 'px';
-      } else if (parseInt(mapPinMain.style.top, 10) < MIN_Y) {
-        mapPinMain.style.top = MIN_Y + 'px';
+      if (parseInt(mapPinMain.style.top, 10) > MAX_Y - PinMain.HEIGHT - PinMain.PEAK) {
+        mapPinMain.style.top = MAX_Y - PinMain.HEIGHT - PinMain.PEAK + 'px';
+      } else if ((parseInt(mapPinMain.style.top, 10)) < MIN_Y - PinMain.HEIGHT - PinMain.PEAK) {
+        mapPinMain.style.top = MIN_Y - PinMain.HEIGHT - PinMain.PEAK + 'px';
       }
     };
 
     var onMouseUp = function () {
       setCoordinates(
-          PinMain.HEIGHT / 2,
-          PinMain.WIDTH / 2
+          PinMain.WIDTH / 2,
+          PinMain.HEIGHT + PinMain.PEAK
       );
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
-      // Отрисовывает пины, ближайшие к главному Пину
-      ads = window.filter.sortByDistance(
-          parseInt(mapPinMain.style.left, 10) - PinMain.HEIGHT / 2,
-          parseInt(mapPinMain.style.top, 10) - PinMain.WIDTH / 2,
-          MAX_AMOUNT);
-      window.util.debounce(renderMapPins(ads));
-    };
+    //   // Отрисовывает пины, ближайшие к главному Пину
+    //   ads = window.filter.sortByDistance(
+    //       parseInt(mapPinMain.style.left, 10) - PinMain.HEIGHT / 2,
+    //       parseInt(mapPinMain.style.top, 10) - PinMain.WIDTH / 2,
+    //       MAX_AMOUNT);
+    //   window.util.debounce(renderMapPins(ads));
+    // };
+    renderMapPins();
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);

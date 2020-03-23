@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var PIN_MAIN_PEAK = 20;
   var HOUSING_PRICES = [
     0,
     1000,
@@ -15,11 +14,21 @@
   ];
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
+  var adFormAddress = adForm.querySelector('#address');
   var mapPinMain = map.querySelector('.map__pin--main');
   var btnReset = adForm.querySelector('.ad-form__reset');
   var formFilters = document.querySelector('.map__filters');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
+
+  // Начальное местоположение главной метки
+  var startMapPinMain = {
+    centerX: Math.round(window.pin.PinMain.X + window.pin.PinMain.WIDTH / 2),
+    centerY: Math.round(window.pin.PinMain.Y + window.pin.PinMain.HEIGHT / 2),
+    pinMainY: Math.round(window.pin.PinMain.Y + window.pin.PinMain.HEIGHT / 2 + window.pin.PinMain.PEAK)
+  };
+  //
+  // adFormAddress.setAttribute('value', startMapPinMain.centerX + ', ' + startMapPinMain.centerY);
 
   // Включает\отключает элементы формы
   var setDisableToggle = function (data, toggle) {
@@ -52,20 +61,14 @@
     setDisableToggle(FORM_ELEMENTS, 'remove');
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + PIN_MAIN_PEAK);
+    window.pin.setCoordinates(window.pin.PinMain.WIDTH / 2, window.pin.PinMain.HEIGHT + window.pin.PinMain.PEAK);
     window.api.load(function (result) {
       window.pin.renderMapPins(result);
-      window.filter.renderAdverts(result);
+      // window.filter.renderAdverts(result);
     }, window.api.onLoadError);
     formFilters.addEventListener('change', window.util.debounce(window.filter.onFilterChange));
     mapPinMain.removeEventListener('mousedown', onActivateForm);
     mapPinMain.removeEventListener('keydown', onActivateFormEnt);
-  };
-
-  // Начальное местоположение главной метки
-  var startMapPinMain = function () {
-    mapPinMain.style.top = (window.pin.PinMain.Y) + 'px';
-    mapPinMain.style.left = (window.pin.PinMain.X) + 'px';
   };
 
   // Деактивирует форму
@@ -74,9 +77,10 @@
     setDisableToggle(FORM_ELEMENTS, 'add');
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
+    adFormAddress.setAttribute('value', startMapPinMain.centerX + ', ' + startMapPinMain.centerY);
+    adFormAddress.value = startMapPinMain.centerX + ', ' + startMapPinMain.centerY;
     window.pin.removePins();
     window.card.removeMapCard();
-    startMapPinMain();
     mapPinMain.addEventListener('mousedown', onActivateForm);
     mapPinMain.addEventListener('keydown', onActivateFormEnt);
   };
