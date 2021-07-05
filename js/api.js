@@ -82,6 +82,7 @@
   };
 
   var onLoadSuccess = function () {
+    // window.form.deactivateForm();
     var onRemoveSuccess = function () {
       success.removeEventListener('click', onRemoveSuccess);
       success.remove();
